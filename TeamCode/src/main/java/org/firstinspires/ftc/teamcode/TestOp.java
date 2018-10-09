@@ -107,8 +107,11 @@ public class TestOp extends LinearOpMode {
 
             //Spin
             //if (gamepad1.a) {
-                //leftDrive.setPower(0.75);
-                //rightDrive.setPower(-0.75);
+            //    leftDrive.setPower(0.75);
+            //    rightDrive.setPower(-0.75);
+            //} else {
+            //    leftDrive.setPower(leftPower);
+            //    rightDrive.setPower(rightPower);
             //}
 
 
