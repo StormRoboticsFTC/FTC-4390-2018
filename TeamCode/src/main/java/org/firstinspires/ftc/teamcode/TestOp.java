@@ -58,7 +58,7 @@ public class TestOp extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
-    private ColorSensor color_sensor = null;
+    private ColorSensor color_sensor;
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -70,6 +70,7 @@ public class TestOp extends LinearOpMode {
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         color_sensor = hardwareMap.colorSensor.get("color");
+
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -79,7 +80,7 @@ public class TestOp extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        //Enables color sensor
+        //Enables color sensor LED
         color_sensor.enableLed(true);
 
         // run until the end of the match (driver presses STOP)
