@@ -29,14 +29,11 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
@@ -50,15 +47,15 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Linear OpMode", group="Linear Opmode")
+@TeleOp(name="Rev Test Op 1", group="Linear Opmode")
 // @Disabled
-public class TestOp extends LinearOpMode {
+public class Rev1TestOp extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     //private DcMotor rightDrive = null;
-    private ColorSensor color_sensor;
+    //private ColorSensor color_sensor;
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -69,7 +66,7 @@ public class TestOp extends LinearOpMode {
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         //rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        color_sensor = hardwareMap.colorSensor.get("color");
+        //color_sensor = hardwareMap.colorSensor.get("color");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -81,7 +78,7 @@ public class TestOp extends LinearOpMode {
         runtime.reset();
 
         //Enables color sensor LED
-        color_sensor.enableLed(true);
+        //color_sensor.enableLed(true);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -124,8 +121,8 @@ public class TestOp extends LinearOpMode {
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower);
-            telemetry.addData("ColorSensor", "color %d", color_sensor.argb());
+            telemetry.addData("Motors", "left (%.2f)", leftPower);
+            //telemetry.addData("ColorSensor", "color %d", color_sensor.argb());
             telemetry.update();
         }
     }
