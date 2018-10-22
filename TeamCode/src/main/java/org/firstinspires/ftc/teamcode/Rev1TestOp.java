@@ -54,7 +54,7 @@ public class Rev1TestOp extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
-    //private DcMotor rightDrive = null;
+    private DcMotor rightDrive = null;
     //private ColorSensor color_sensor;
     @Override
     public void runOpMode() {
@@ -65,13 +65,13 @@ public class Rev1TestOp extends LinearOpMode {
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
-        //rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         //color_sensor = hardwareMap.colorSensor.get("color");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        //rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -103,11 +103,11 @@ public class Rev1TestOp extends LinearOpMode {
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
              leftPower  = -gamepad1.left_stick_y ;
-             //rightPower = -gamepad1.right_stick_y ;
+             rightPower = -gamepad1.right_stick_y ;
 
             // Send calculated power to wheels
-            leftDrive.setPower(leftPower);
-            //rightDrive.setPower(rightPower);
+  //          leftDrive.setPower(leftPower);
+//            rightDrive.setPower(rightPower);
 
             //Spin
             //if (gamepad1.a) {
@@ -115,13 +115,15 @@ public class Rev1TestOp extends LinearOpMode {
             //    rightDrive.setPower(-0.75);
             //} else {
             //    leftDrive.setPower(leftPower);
-            //    rightDrive.setPower(rightPower);
+            //   rightDrive.setPower(rightPower);
             //}
 
-
+            leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f)", leftPower);
+            telemetry.addData("left encoder", "(%d", leftDrive.getCurrentPosition());
             //telemetry.addData("ColorSensor", "color %d", color_sensor.argb());
             telemetry.update();
         }

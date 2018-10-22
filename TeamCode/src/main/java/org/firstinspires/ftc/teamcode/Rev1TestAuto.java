@@ -59,20 +59,50 @@ public class Rev1TestAuto extends LinearOpMode {
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
 
+    //Counts Per Rotation: 1120
+    //
+
+
+    //static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
+    //static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
+    //static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
+    //static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+    //        (WHEEL_DIAMETER_INCHES * 3.1415);
+    //static final double     DRIVE_SPEED             = 0.6;
+    //static final double     TURN_SPEED              = 0.5;
+
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
+        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
         // Wait for the game to start (driver presses PLAY)
+        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         waitForStart();
+
+        leftDrive.setTargetPosition(1120);
+        rightDrive.setTargetPosition(1120);
+        leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         runtime.reset();
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
+        rightDrive.setPower(0.8);
+        leftDrive.setPower(0.8);
+
+        while (rightDrive.isBusy() && leftDrive.isBusy() && opModeIsActive()) {
             telemetry.update();
         }
+
+
+
+
+
+        // run until the end of the match (driver presses STOP)
+
     }
 }
