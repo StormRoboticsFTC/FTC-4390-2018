@@ -55,7 +55,7 @@ public class Rev1TestOp extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
-    //private ColorSensor color_sensor;
+    private ColorSensor color_sensor = null;
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -66,7 +66,7 @@ public class Rev1TestOp extends LinearOpMode {
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        //color_sensor = hardwareMap.colorSensor.get("color");
+        color_sensor = hardwareMap.colorSensor.get("color");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -78,7 +78,7 @@ public class Rev1TestOp extends LinearOpMode {
         runtime.reset();
 
         //Enables color sensor LED
-        //color_sensor.enableLed(true);
+        color_sensor.enableLed(true);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -124,7 +124,7 @@ public class Rev1TestOp extends LinearOpMode {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f)", leftPower);
             telemetry.addData("left encoder", "(%d", leftDrive.getCurrentPosition());
-            //telemetry.addData("ColorSensor", "color %d", color_sensor.argb());
+            telemetry.addData("ColorSensor", "color %d", color_sensor.red());
             telemetry.update();
         }
     }

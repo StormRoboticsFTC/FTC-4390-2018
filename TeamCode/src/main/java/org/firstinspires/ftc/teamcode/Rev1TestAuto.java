@@ -85,16 +85,18 @@ public class Rev1TestAuto extends LinearOpMode {
         rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         waitForStart();
 
-        leftDrive.setTargetPosition(1120);
-        rightDrive.setTargetPosition(1120);
+        runtime.reset();
+
         leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        runtime.reset();
+        leftDrive.setTargetPosition(560);
+        rightDrive.setTargetPosition(560);
         rightDrive.setPower(0.8);
         leftDrive.setPower(0.8);
 
-        while (rightDrive.isBusy() && leftDrive.isBusy() && opModeIsActive()) {
+        while (rightDrive.isBusy() || leftDrive.isBusy()) {
+            telemetry.addData("Right Encoder: %d", rightDrive.getCurrentPosition());
+            telemetry.addData("Left Encoder: %d", leftDrive.getCurrentPosition());
             telemetry.update();
         }
 
