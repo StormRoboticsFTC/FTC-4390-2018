@@ -34,7 +34,7 @@ public class Rev2TestAuto extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
+        leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         colorSensor = hardwareMap.colorSensor.get("color");
         // Most robots need the motor(s) on one side to be reversed to drive forward.
@@ -56,9 +56,10 @@ public class Rev2TestAuto extends LinearOpMode {
         rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Path0",  "Starting at %7d :%7d",
+        telemetry.addData("Path0", "Starting at %7d :%7d",
                 leftDrive.getCurrentPosition(),
                 rightDrive.getCurrentPosition());
+
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
@@ -68,11 +69,14 @@ public class Rev2TestAuto extends LinearOpMode {
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         //encoderDrive(DRIVE_SPEED,  24,  24, 20.0);  // S1: Forward 47 Inches with 5 Sec timeout
 
+
+
+
+
         telemetry.addData("Path", "Complete");
-        telemetry.addData("Color", colorSensor.argb());
+        telemetry.addData("ColorSensor", "color %d red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
         telemetry.update();
     }
-
     /*
      *  Method to perform a relative move, based on encoder counts.
      *  Encoders are not reset as the move is based on the current position.
@@ -124,6 +128,7 @@ public class Rev2TestAuto extends LinearOpMode {
                 telemetry.update();
             }
 
+
             // Stop all motion;
             leftDrive.setPower(0);
             rightDrive.setPower(0);
@@ -135,4 +140,16 @@ public class Rev2TestAuto extends LinearOpMode {
               sleep(250000);   // optional pause after each move
         }
     }
+    public boolean testIfGold() {
+        boolean isGold = false;
+        int red = colorSensor.red();
+        int green = colorSensor.green();
+        int blue = colorSensor.blue();
+        if (red >= 18 && red <= 20 && green >= 0 && green <= 1 && blue >= 10 && blue <= 12) {
+            isGold = true;
+        }
+        return isGold;
+    }
+
+
 }
