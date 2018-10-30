@@ -31,10 +31,12 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
@@ -48,17 +50,21 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Rev Test Op 1", group="Linear Opmode")
-// @Disabled
-public class Rev1TestOp extends LinearOpMode {
+@TeleOp(name="MainTeleOp", group="Linear Opmode")
+@Disabled
+public class MainTeleop extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
-    //private DcMotor leftDrive2 = null;
-    private DcMotor rightDrive = null;
-    private ColorSensor colorSensor = null;
-    private Servo servo = null;
+    private DcMotor leftDrive1 = null;
+    private DcMotor leftDrive2 = null;
+    private DcMotor rightDrive1 = null;
+    private DcMotor rightDrive2 = null;
+    private DcMotor intake = null;
+    private DcMotor lift = null;
+    private ColorSensor color_sensor;
+    private Servo servo1 = null;
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -67,21 +73,28 @@ public class Rev1TestOp extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        colorSensor = hardwareMap.colorSensor.get("color");
-        servo = hardwareMap.get(Servo.class, "servo1");
+        leftDrive1  = hardwareMap.get(DcMotor.class, "left_drive1");
+        leftDrive2  = hardwareMap.get(DcMotor.class, "left_drive2");
+        rightDrive1 = hardwareMap.get(DcMotor.class, "right_drive1");
+        rightDrive2 = hardwareMap.get(DcMotor.class, "right_drive2");
+        intake = hardwareMap.get(DcMotor.class, "intake");
+        lift = hardwareMap.get(DcMotor.class, "lift");
+        servo1 = hardwareMap.get(Servo.class, "servo1");
+        color_sensor = hardwareMap.colorSensor.get("color");
+
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive1.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive2.setDirection(DcMotor.Direction.REVERSE);
+        leftDrive1.setDirection(DcMotor.Direction.FORWARD);
+        leftDrive2.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
         //Enables color sensor LED
-        colorSensor.enableLed(true);
+        color_sensor.enableLed(true);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -101,50 +114,32 @@ public class Rev1TestOp extends LinearOpMode {
             //rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
 
+
+
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            leftPower = -gamepad1.left_stick_y;
-            rightPower = -gamepad1.right_stick_y;
+             leftPower  = -gamepad1.left_stick_y ;
+             //rightPower = -gamepad1.right_stick_y ;
 
             // Send calculated power to wheels
-            //          leftDrive.setPower(leftPower);
-//            rightDrive.setPower(rightPower);
+            leftDrive1.setPower(leftPower);
+            //rightDrive.setPower(rightPower);
 
-            //color
-            if (gamepad2.a) {
-                servo.setPosition(0.5);
-            } else if (gamepad2.b) {
-                servo.setPosition(1.0);
-            } else {
-                servo.setPosition(0.0);
-            }
-            if (gamepad1.a) {
-                telemetry.addData("is gold?", testIfGold());
-                telemetry.update();
-                sleep(3000);
+            //Spin
+            //if (gamepad1.a) {
+            //    leftDrive1.setPower(0.75);
+            //    rightDrive.setPower(-0.75);
+            //} else {
+            //    leftDrive1.setPower(leftPower);
+            //    rightDrive.setPower(rightPower);
+            //}
 
-                leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                // Show the elapsed game time and wheel power.
-                telemetry.addData("Status", "Run Time: " + runtime.toString());
-                telemetry.addData("Motors", "left (%.2f)", leftPower);
-                telemetry.addData("left encoder", "(%d)", leftDrive.getCurrentPosition());
-                telemetry.addData("ColorSensor", "red %d green %d blue %d alpha %d", colorSensor.red(), colorSensor.green(), colorSensor.blue(), colorSensor.alpha());
-                telemetry.update();
-            }
+
+            // Show the elapsed game time and wheel power.
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+          //  telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            telemetry.addData("ColorSensor", "color %d", color_sensor.argb());
+            telemetry.update();
         }
-    }
-        public boolean testIfGold(){
-            boolean isGold = false;
-            int red = colorSensor.red();
-            int green = colorSensor.green();
-            int blue = colorSensor.blue();
-            int alpha = colorSensor.alpha();
-            if (green >= (red * 0.25) && green <= (red * 0.75) && blue <=10 && alpha >= green && alpha <= red) {
-                isGold = true;
-            }
-
-            return isGold;
-
     }
 }

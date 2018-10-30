@@ -1,25 +1,29 @@
 // this is a copy from Mr. Bross's training package; to be changed as needed
 package org.firstinspires.ftc.teamcode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name="Rev2TestAuto", group="Linear Opmode")
-//@Disabled
-public class Rev2TestAuto extends LinearOpMode {
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
+@Autonomous(name="MainAuto", group="Linear Opmode")
+@Disabled
+public class MainAuto extends LinearOpMode {
 
     // Declare OpMode members.
-    // Notice that because I am using two motors on each side of the robot, they much be
-    // initialized individually.
     private DcMotor leftDrive = null;
+    private DcMotor leftDrive2 = null;
     private DcMotor rightDrive = null;
+    private DcMotor rightDrive2 = null;
     private ColorSensor colorSensor;
+    private Servo servo1 = null;
+    private DcMotor lift = null;
     private ElapsedTime     runtime = new ElapsedTime();
 
+    //Declares variables and constants
     static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 0.5 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
@@ -28,6 +32,10 @@ public class Rev2TestAuto extends LinearOpMode {
     static final double     DRIVE_SPEED             = 1;
     static final double     TURN_SPEED              = 1;
 
+    static final double TURNING_DIAMETER = 14.25;
+    static final double TURNING_CIRCUMFERENCE = TURNING_DIAMETER * 3.1415;
+
+
     @Override
     public void runOpMode() {
 
@@ -35,22 +43,27 @@ public class Rev2TestAuto extends LinearOpMode {
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
         leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
+        leftDrive2 = hardwareMap.get(DcMotor.class, "left_drive2");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        rightDrive2 = hardwareMap.get(DcMotor.class, "right_drive2");
+        lift = hardwareMap.get(DcMotor.class, "lift1");
+        servo1 = hardwareMap.get(Servo.class, "servo1");
         colorSensor = hardwareMap.colorSensor.get("color");
-        // Most robots need the motor(s) on one side to be reversed to drive forward.
-        // Reverse the motor that runs backwards when connected directly to the battery.
-        // This can only be determined with live testing, but is often the left side
-        // in a traditional tank drive setup. Make sure that both motors on the same side
-        // are driving in the same direction, or else there will be serious problems!
+
+
+        //Sets direction of motors
+        leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftDrive2.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive2.setDirection(DcMotor.Direction.REVERSE);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");
         telemetry.update();
 
+        //Sets up encoders
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
 
         leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -59,24 +72,34 @@ public class Rev2TestAuto extends LinearOpMode {
         telemetry.addData("Path0", "Starting at %7d :%7d",
                 leftDrive.getCurrentPosition(),
                 rightDrive.getCurrentPosition());
-
         telemetry.update();
+
+
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         colorSensor.enableLed(true);
+
+
+
+
+
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        //encoderDrive(DRIVE_SPEED,  24,  24, 20.0);  // S1: Forward 47 Inches with 5 Sec timeout
-
-
-
-
+        encoderDrive(DRIVE_SPEED,  12,  12, 10.0);  // S1: Forward 2 ft with 20 second timeout
+        encoderDrive(TURN_SPEED, turnInPlaceCalc(90), turnInPlaceCalc(90), 10.0);
 
         telemetry.addData("Path", "Complete");
         telemetry.addData("ColorSensor", "color %d red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
         telemetry.update();
     }
+
+
+
+
+
+
+
     /*
      *  Method to perform a relative move, based on encoder counts.
      *  Encoders are not reset as the move is based on the current position.
@@ -140,6 +163,10 @@ public class Rev2TestAuto extends LinearOpMode {
               sleep(250000);   // optional pause after each move
         }
     }
+    public double turnInPlaceCalc(int degrees) {
+        return (degrees / 360) * TURNING_CIRCUMFERENCE;
+    }
+    //Tests for gold color
     public boolean testIfGold() {
         boolean isGold = false;
         int red = colorSensor.red();
