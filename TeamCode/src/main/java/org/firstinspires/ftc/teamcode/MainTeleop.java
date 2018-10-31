@@ -62,7 +62,7 @@ public class MainTeleop extends LinearOpMode {
     private DcMotor rightDrive2 = null;
     private DcMotor intake = null;
     private DcMotor lift = null;
-    private ColorSensor color_sensor;
+    private ColorSensor colorSensor;
     private Servo servo1 = null;
 
     @Override
@@ -80,7 +80,7 @@ public class MainTeleop extends LinearOpMode {
         intake = hardwareMap.get(DcMotor.class, "intake");
         lift = hardwareMap.get(DcMotor.class, "lift");
         servo1 = hardwareMap.get(Servo.class, "servo1");
-        color_sensor = hardwareMap.colorSensor.get("color");
+        colorSensor = hardwareMap.colorSensor.get("color");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -94,7 +94,7 @@ public class MainTeleop extends LinearOpMode {
         runtime.reset();
 
         //Enables color sensor LED
-        color_sensor.enableLed(true);
+        colorSensor.enableLed(true);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -119,11 +119,13 @@ public class MainTeleop extends LinearOpMode {
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
              leftPower  = -gamepad1.left_stick_y ;
-             //rightPower = -gamepad1.right_stick_y ;
+             rightPower = -gamepad1.right_stick_y ;
 
             // Send calculated power to wheels
             leftDrive1.setPower(leftPower);
-            //rightDrive.setPower(rightPower);
+            leftDrive2.setPower(leftPower);
+            rightDrive1.setPower(rightPower);
+            rightDrive2.setPower(rightPower);
 
             //Spin
             //if (gamepad1.a) {
@@ -135,11 +137,40 @@ public class MainTeleop extends LinearOpMode {
             //}
 
 
+
+            //Controls the servo
+            if (gamepad1.a) {
+                servo1.setPosition(0.5);
+            }
+
+            if (gamepad1.b) {
+                servo1.setPosition(1.0);
+            }
+
+            if (gamepad1.y) {
+                telemetry.addData("is gold?", testIfGold())
+            }
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
           //  telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-            telemetry.addData("ColorSensor", "color %d", color_sensor.argb());
+            telemetry.addData("ColorSensor", "color %d red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
             telemetry.update();
+
+            //Tests for gold cube
+            public void testIfGold() {
+                boolean isGold = false;
+                int red = colorSensor.red();
+                int green = colorSensor.green();
+                int blue = colorSensor.blue();
+                int alpha = colorSensor.alpha();
+                if (green >= (red * 0.25) && green <= (red * 0.75) && blue <=10 && alpha >= green && alpha <= red) {
+                    //isGold = true;
+                }
+                //return isGold;
+
         }
     }
-}
+//}
+
+    private void testIfGold() {
+    }
