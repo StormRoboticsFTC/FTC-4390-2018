@@ -15,12 +15,12 @@ public class MainAuto extends LinearOpMode {
 
     // Declare OpMode members.
     private DcMotor leftDrive = null;
-    private DcMotor leftDrive2 = null;
+    //private DcMotor leftDrive2 = null;
     private DcMotor rightDrive = null;
-    private DcMotor rightDrive2 = null;
+    //private DcMotor rightDrive2 = null;
     private ColorSensor colorSensor;
-    private Servo servo1 = null;
-    private DcMotor lift = null;
+    //private Servo servo1 = null;
+    //private DcMotor lift = null;
     private ElapsedTime     runtime = new ElapsedTime();
 
     //Declares variables and constants
@@ -37,25 +37,25 @@ public class MainAuto extends LinearOpMode {
 
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
         leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
-        leftDrive2 = hardwareMap.get(DcMotor.class, "left_drive2");
+        //leftDrive2 = hardwareMap.get(DcMotor.class, "left_drive2");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        rightDrive2 = hardwareMap.get(DcMotor.class, "right_drive2");
-        lift = hardwareMap.get(DcMotor.class, "lift1");
-        servo1 = hardwareMap.get(Servo.class, "servo1");
+        //rightDrive2 = hardwareMap.get(DcMotor.class, "right_drive2");
+        //lift = hardwareMap.get(DcMotor.class, "lift1");
+        //servo1 = hardwareMap.get(Servo.class, "servo1");
         colorSensor = hardwareMap.colorSensor.get("color");
 
 
         //Sets direction of motors
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        leftDrive2.setDirection(DcMotor.Direction.FORWARD);
+        //leftDrive2.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive2.setDirection(DcMotor.Direction.REVERSE);
+        //rightDrive2.setDirection(DcMotor.Direction.REVERSE);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");
@@ -86,8 +86,13 @@ public class MainAuto extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  12,  12, 10.0);  // S1: Forward 2 ft with 20 second timeout
-        encoderDrive(TURN_SPEED, turnInPlaceCalc(90), turnInPlaceCalc(90), 10.0);
+
+
+            encoderDrive(TURN_SPEED, 24, -24, 3);
+
+
+
+        //lift.setTargetPosition();
 
         telemetry.addData("Path", "Complete");
         telemetry.addData("ColorSensor", "color %d red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
