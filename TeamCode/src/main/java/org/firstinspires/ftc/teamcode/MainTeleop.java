@@ -73,8 +73,8 @@ public class MainTeleop extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive1  = hardwareMap.get(DcMotor.class, "left_drive1");
-        leftDrive2  = hardwareMap.get(DcMotor.class, "left_drive2");
+        leftDrive1 = hardwareMap.get(DcMotor.class, "left_drive1");
+        leftDrive2 = hardwareMap.get(DcMotor.class, "left_drive2");
         rightDrive1 = hardwareMap.get(DcMotor.class, "right_drive1");
         rightDrive2 = hardwareMap.get(DcMotor.class, "right_drive2");
         intake = hardwareMap.get(DcMotor.class, "intake");
@@ -107,19 +107,17 @@ public class MainTeleop extends LinearOpMode {
             // Comment out the method that's not used.  The default below is POV.
 
             // POV Mode uses left stick to go forward, and right stick to turn.
+            //
             // - This uses basic math to combine motions and is easier to drive straight.
             //double drive = -gamepad1.left_stick_y;
             //double turn  =  gamepad1.right_stick_x;
             //leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
             //rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
-
-
-
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
-             leftPower  = -gamepad1.left_stick_y ;
-             rightPower = -gamepad1.right_stick_y ;
+            leftPower = -gamepad1.left_stick_y;
+            rightPower = -gamepad1.right_stick_y;
 
             // Send calculated power to wheels
             leftDrive1.setPower(leftPower);
@@ -127,50 +125,46 @@ public class MainTeleop extends LinearOpMode {
             rightDrive1.setPower(rightPower);
             rightDrive2.setPower(rightPower);
 
-            //Spin
-            //if (gamepad1.a) {
-            //    leftDrive1.setPower(0.75);
-            //    rightDrive.setPower(-0.75);
-            //} else {
-            //    leftDrive1.setPower(leftPower);
-            //    rightDrive.setPower(rightPower);
-            //}
-
-
-
-            //Controls the servo
-            if (gamepad1.a) {
+            //Controls the outtake
+            if (gamepad2.a) {
                 servo1.setPosition(0.5);
-            }
-
-            if (gamepad1.b) {
+            } else if (gamepad2.b) {
                 servo1.setPosition(1.0);
+            } else {
+                servo1.setPosition(0.0);
             }
 
-            if (gamepad1.y) {
-                telemetry.addData("is gold?", testIfGold())
+            //controls the intake: option 1
+            if (gamepad1.left_trigger != 0) {
+                intake.setPower(0.5);
             }
+            if (gamepad1.left_bumper) {
+                intake.setPower(0.0);
+            }
+
+            // this is an on and off control, where separate
+            // an alternate would be to use the trigger to turn it on and use an else to turn it off
+            // when the trigger is NOT pressed
+
+            //controls the lift
+            if (gamepad2.dpad_up) {
+                lift.setPower(0.6);
+            } else if (gamepad2.dpad_down) {
+                lift.setPower(-0.6);
+            } else {
+                lift.setPower(0.0);
+            }
+
+
+
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-          //  telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-            telemetry.addData("ColorSensor", "color %d red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
+            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            //telemetry.addData("ColorSensor", "color %d red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
             telemetry.update();
-
-            //Tests for gold cube
-            public void testIfGold() {
-                boolean isGold = false;
-                int red = colorSensor.red();
-                int green = colorSensor.green();
-                int blue = colorSensor.blue();
-                int alpha = colorSensor.alpha();
-                if (green >= (red * 0.25) && green <= (red * 0.75) && blue <=10 && alpha >= green && alpha <= red) {
-                    //isGold = true;
-                }
-                //return isGold;
-
         }
-    }
-//}
 
-    private void testIfGold() {
-    }
+        boolean gamepad_y_button;
+        
+
+}

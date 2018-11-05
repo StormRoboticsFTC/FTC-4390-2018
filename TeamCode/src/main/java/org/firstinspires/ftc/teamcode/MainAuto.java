@@ -98,13 +98,6 @@ public class MainAuto extends LinearOpMode {
         telemetry.addData("ColorSensor", "color %d red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
         telemetry.update();
     }
-
-
-
-
-
-
-
     /*
      *  Method to perform a relative move, based on encoder counts.
      *  Encoders are not reset as the move is based on the current position.
@@ -155,17 +148,13 @@ public class MainAuto extends LinearOpMode {
                         rightDrive.getCurrentPosition());
                 telemetry.update();
             }
-
-
             // Stop all motion;
             leftDrive.setPower(0);
             rightDrive.setPower(0);
-
             // Turn off RUN_TO_POSITION
             leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-              sleep(250000);   // optional pause after each move
+            sleep(250000);   // optional pause after each move
         }
     }
     public double turnInPlaceCalc(int degrees) {
