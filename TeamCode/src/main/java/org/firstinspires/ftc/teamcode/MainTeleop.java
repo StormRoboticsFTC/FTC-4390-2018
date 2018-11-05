@@ -126,9 +126,9 @@ public class MainTeleop extends LinearOpMode {
             rightDrive2.setPower(rightPower);
 
             //Controls the outtake
-            if (gamepad2.a) {
+            if (gamepad2.left_trigger != 0) {
                 servo1.setPosition(0.5);
-            } else if (gamepad2.b) {
+            } else if (gamepad2.left_bumper) {
                 servo1.setPosition(1.0);
             } else {
                 servo1.setPosition(0.0);
@@ -156,15 +156,11 @@ public class MainTeleop extends LinearOpMode {
             }
 
 
-
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             //telemetry.addData("ColorSensor", "color %d red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
             telemetry.update();
         }
-
-        boolean gamepad_y_button;
-        
-
+    }
 }

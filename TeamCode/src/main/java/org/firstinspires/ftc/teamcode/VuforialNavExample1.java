@@ -52,7 +52,6 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.FRONT;
 
-
 /**
  * This 2018-2019 OpMode illustrates the basics of using the Vuforia localizer to determine
  * positioning and orientation of robot on the FTC field.
@@ -107,7 +106,7 @@ public class VuforialNavExample1 extends LinearOpMode {
      * Once you've obtained a license key, copy the string from the Vuforia web site
      * and paste it in to your code on the next line, between the double quotes.
      */
-    private static final String VUFORIA_KEY = " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
+        private static final String VUFORIA_KEY = "AfQ4U0r/////AAABmVgN4Zzys0nzrGGDnAebhBR3RkUCdZsK0PN2lZT3Ujhc0v9Nz0C9URa+s9PDuecATx2p1y7rKD24wQUEpeDjpYOpG44/IISN25nhcL6Z7MIs/Xn7U2R0RDy2Eit3Dg8h8Z7C4NH56slcmJ/yF0ibzfcPlBBJ+KSmO7aRPrAD1plTG3FjIE+/dgsCfBly0a5v4qvLunykRXrlZQHzIDirFsUvBLjilUvRao4qBxshtZ7qADv7uJnCrCh/mz/BHlVgmr+ZyyOOKKyuLrbgwItRT7pC5YK7wVIQHIFJxGiCfl+jwdQH4NTAygkonYCKw2bl8rA/BjAV/sdH6Sc6zdxg4vTjE0CeH+3qvGFg13nIcGvC";
 
     // Since ImageTarget trackables use mm to specifiy their dimensions, we must use mm for all the physical dimension.
     // We will define some constants and conversions here
