@@ -63,7 +63,8 @@ public class MainTeleop extends LinearOpMode {
     private DcMotor intake = null;
     private DcMotor lift = null;
     private ColorSensor colorSensor;
-    private Servo servo1 = null;
+    private Servo outtake = null;
+
 
     @Override
     public void runOpMode() {
@@ -79,7 +80,7 @@ public class MainTeleop extends LinearOpMode {
         rightDrive2 = hardwareMap.get(DcMotor.class, "right_drive2");
         intake = hardwareMap.get(DcMotor.class, "intake");
         lift = hardwareMap.get(DcMotor.class, "lift");
-        servo1 = hardwareMap.get(Servo.class, "servo1");
+        outtake = hardwareMap.get(Servo.class, "outtake");
         colorSensor = hardwareMap.colorSensor.get("color");
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -127,11 +128,11 @@ public class MainTeleop extends LinearOpMode {
 
             //Controls the outtake
             if (gamepad2.left_trigger != 0) {
-                servo1.setPosition(0.5);
+                outtake.setPosition(0.5);
             } else if (gamepad2.left_bumper) {
-                servo1.setPosition(1.0);
+                outtake.setPosition(1.0);
             } else {
-                servo1.setPosition(0.0);
+                outtake.setPosition(0.0);
             }
 
             //controls the intake: option 1

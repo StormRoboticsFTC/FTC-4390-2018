@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name="Rev2TestAuto", group="Linear Opmode")
-//@Disabled
+@Disabled
 public class Rev2TestAuto extends LinearOpMode {
 
     // Declare OpMode members.

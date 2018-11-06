@@ -87,9 +87,13 @@ public class MainAuto extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
 
-
-            encoderDrive(TURN_SPEED, 24, -24, 3);
-
+        // lower lift + unhook
+        // drive backwards to first mineral
+        // check if gold and if gold bump
+        // otheriwse move on to next mineral
+        // repeat
+        // park on crater
+        encoderDrive(TURN_SPEED, 24, -24, 3);
 
 
         //lift.setTargetPosition();
