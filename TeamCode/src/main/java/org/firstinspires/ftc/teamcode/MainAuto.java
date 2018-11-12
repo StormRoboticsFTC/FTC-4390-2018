@@ -93,9 +93,6 @@ public class MainAuto extends LinearOpMode {
         // otheriwse move on to next mineral
         // repeat
         // park on crater
-        encoderDrive(TURN_SPEED, 24, -24, 3);
-
-
         //lift.setTargetPosition();
 
         telemetry.addData("Path", "Complete");

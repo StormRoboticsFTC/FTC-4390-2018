@@ -139,6 +139,7 @@ public class MainTeleop extends LinearOpMode {
             if (gamepad1.left_trigger != 0) {
                 intake.setPower(0.5);
             }
+           //This seems irrelevant
             if (gamepad1.left_bumper) {
                 intake.setPower(0.0);
             }
@@ -160,7 +161,7 @@ public class MainTeleop extends LinearOpMode {
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-            //telemetry.addData("ColorSensor", "color %d red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
+            telemetry.addData("ColorSensor", "color %d red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
             telemetry.update();
         }
     }
