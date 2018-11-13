@@ -9,18 +9,18 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-@Autonomous(name="MainAuto", group="Linear Opmode")
-@Disabled
+@Autonomous(name="MainAuto", group="Autonomous")
+//@Disabled
 public class MainAuto extends LinearOpMode {
 
     // Declare OpMode members.
     private DcMotor leftDrive = null;
-    //private DcMotor leftDrive2 = null;
+    private DcMotor leftDrive2 = null;
     private DcMotor rightDrive = null;
-    //private DcMotor rightDrive2 = null;
+    private DcMotor rightDrive2 = null;
     private ColorSensor colorSensor;
-    //private Servo servo1 = null;
-    //private DcMotor lift = null;
+    private Servo servo1 = null;
+    private DcMotor lift = null;
     private ElapsedTime     runtime = new ElapsedTime();
 
     //Declares variables and constants
@@ -35,7 +35,6 @@ public class MainAuto extends LinearOpMode {
     static final double TURNING_DIAMETER = 14.25;
     static final double TURNING_CIRCUMFERENCE = TURNING_DIAMETER * 3.1415;
 
-
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -43,19 +42,19 @@ public class MainAuto extends LinearOpMode {
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
         leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
-        //leftDrive2 = hardwareMap.get(DcMotor.class, "left_drive2");
+        leftDrive2 = hardwareMap.get(DcMotor.class, "left_drive2");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        //rightDrive2 = hardwareMap.get(DcMotor.class, "right_drive2");
-        //lift = hardwareMap.get(DcMotor.class, "lift1");
-        //servo1 = hardwareMap.get(Servo.class, "servo1");
+        rightDrive2 = hardwareMap.get(DcMotor.class, "right_drive2");
+        lift = hardwareMap.get(DcMotor.class, "lift1");
+        servo1 = hardwareMap.get(Servo.class, "servo1");
         colorSensor = hardwareMap.colorSensor.get("color");
 
 
         //Sets direction of motors
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        //leftDrive2.setDirection(DcMotor.Direction.FORWARD);
+        leftDrive2.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
-        //rightDrive2.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive2.setDirection(DcMotor.Direction.REVERSE);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");
@@ -64,8 +63,12 @@ public class MainAuto extends LinearOpMode {
         //Sets up encoders
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftDrive2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightDrive2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightDrive2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
@@ -74,29 +77,29 @@ public class MainAuto extends LinearOpMode {
                 rightDrive.getCurrentPosition());
         telemetry.update();
 
-
-
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         colorSensor.enableLed(true);
 
-
-
-
-
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
 
-        // lower lift + unhook
-        // drive backwards to first mineral
-        // check if gold and if gold bump
-        // otheriwse move on to next mineral
-        // repeat
-        // park on crater
-        //lift.setTargetPosition();
+        // drive forward 2.5 feet
+        encoderDrive(DRIVE_SPEED, 30, 30, 4.0);
+        //Sample
+        if (testIfGold() == true) {
+            encoderDrive(DRIVE_SPEED, 36, 36, 4.0 );
+        }
+        //place else statement here
 
+        //Drive forward 3ft to the depot
+        //Claim
+        // turn 135 degrees clockwise to point towards the crater
+        //Drive 10 feet and park in the crater
+
+
+        //Adds telemetry data about path
         telemetry.addData("Path", "Complete");
-        telemetry.addData("ColorSensor", "color %d red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
         telemetry.update();
     }
     /*
@@ -158,9 +161,12 @@ public class MainAuto extends LinearOpMode {
             sleep(250000);   // optional pause after each move
         }
     }
-    public double turnInPlaceCalc(int degrees) {
-        return (degrees / 360) * TURNING_CIRCUMFERENCE;
+
+    //Does the calculations for turning in place
+    public double turnInPlaceCalc(int degrees){
+        return ((degrees / 360) * TURNING_CIRCUMFERENCE);
     }
+
     //Tests for gold color
     public boolean testIfGold() {
         boolean isGold = false;
