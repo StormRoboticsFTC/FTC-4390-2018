@@ -25,14 +25,14 @@ public class MainAuto extends LinearOpMode {
 
     //Declares variables and constants
     static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 0.5 ;     // This is < 1.0 if geared UP
+    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     DRIVE_SPEED             = 1;
     static final double     TURN_SPEED              = 1;
 
-    static final double TURNING_DIAMETER = 14.25;
+    static final double TURNING_DIAMETER = 18.1;
     static final double TURNING_CIRCUMFERENCE = TURNING_DIAMETER * 3.1415;
 
     @Override
@@ -41,9 +41,9 @@ public class MainAuto extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
+        leftDrive = hardwareMap.get(DcMotor.class, "left_drive1");
         leftDrive2 = hardwareMap.get(DcMotor.class, "left_drive2");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        rightDrive = hardwareMap.get(DcMotor.class, "right_drive1");
         rightDrive2 = hardwareMap.get(DcMotor.class, "right_drive2");
         lift = hardwareMap.get(DcMotor.class, "lift1");
         servo1 = hardwareMap.get(Servo.class, "servo1");
@@ -51,10 +51,10 @@ public class MainAuto extends LinearOpMode {
 
 
         //Sets direction of motors
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        leftDrive2.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive2.setDirection(DcMotor.Direction.REVERSE);
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftDrive2.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightDrive2.setDirection(DcMotor.Direction.FORWARD);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");
@@ -85,11 +85,10 @@ public class MainAuto extends LinearOpMode {
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
 
         // drive forward 2.5 feet
-        encoderDrive(DRIVE_SPEED, 30, 30, 4.0);
+        encoderDrive(DRIVE_SPEED, 30.0, 30.0, 10.0);
         //Sample
-        if (testIfGold() == true) {
-            encoderDrive(DRIVE_SPEED, 36, 36, 4.0 );
-        }
+        //if (testIfGold() == true) {encoderDrive(DRIVE_SPEED, 36, 36, 4.0 );
+        //}
         //place else statement here
 
         //Drive forward 3ft to the depot
@@ -143,7 +142,7 @@ public class MainAuto extends LinearOpMode {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (leftDrive.isBusy() && rightDrive.isBusy())) {
+                      leftDrive.isBusy() && leftDrive2.isBusy() && rightDrive.isBusy() && rightDrive2.isBusy()) {
 
                 // Display it for the driver.
                 telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
@@ -158,7 +157,7 @@ public class MainAuto extends LinearOpMode {
             // Turn off RUN_TO_POSITION
             leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            sleep(250000);   // optional pause after each move
+           // sleep(250000);   // optional pause after each move
         }
     }
 

@@ -51,7 +51,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  */
 
 @TeleOp(name="Basic: Linear OpMode", group="Linear Opmode")
-// @Disabled
+ @Disabled
 public class TestOp extends LinearOpMode {
 
     // Declare OpMode members.

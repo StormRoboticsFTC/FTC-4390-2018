@@ -51,7 +51,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @Autonomous(name="REV Auto", group="Linear Opmode")
-//@Disabled
+@Disabled
 public class Rev1TestAuto extends LinearOpMode {
 
     // Declare OpMode members.
@@ -73,6 +73,7 @@ public class Rev1TestAuto extends LinearOpMode {
 
 
     @Override
+
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
