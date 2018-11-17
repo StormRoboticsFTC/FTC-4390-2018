@@ -14,13 +14,14 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 public class MainAuto extends LinearOpMode {
 
     // Declare OpMode members.
-    private DcMotor leftDrive = null;
+    private DcMotor leftDrive1 = null;
     private DcMotor leftDrive2 = null;
-    private DcMotor rightDrive = null;
+    private DcMotor rightDrive1 = null;
     private DcMotor rightDrive2 = null;
-    private ColorSensor colorSensor;
-    private Servo servo1 = null;
+    private DcMotor intake = null;
     private DcMotor lift = null;
+    private ColorSensor colorSensor;
+    private Servo outtake = null;
     private ElapsedTime     runtime = new ElapsedTime();
 
     //Declares variables and constants
@@ -36,19 +37,20 @@ public class MainAuto extends LinearOpMode {
     static final double TURNING_CIRCUMFERENCE = TURNING_DIAMETER * 3.1415;
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode(){
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive = hardwareMap.get(DcMotor.class, "left_drive1");
-        leftDrive2 = hardwareMap.get(DcMotor.class, "left_drive2");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive1");
-        rightDrive2 = hardwareMap.get(DcMotor.class, "right_drive2");
-        lift = hardwareMap.get(DcMotor.class, "lift1");
-        servo1 = hardwareMap.get(Servo.class, "servo1");
-        colorSensor = hardwareMap.colorSensor.get("color");
 
+        leftDrive1 = hardwareMap.get(DcMotor.class, "left_drive1");
+        leftDrive2 = hardwareMap.get(DcMotor.class, "left_drive2");
+        rightDrive1 = hardwareMap.get(DcMotor.class, "right_drive1");
+        rightDrive2 = hardwareMap.get(DcMotor.class, "right_drive2");
+        intake = hardwareMap.get(DcMotor.class, "intake");
+        lift = hardwareMap.get(DcMotor.class, "lift1");
+        outtake = hardwareMap.get(Servo.class, "servo1");
+        colorSensor = hardwareMap.colorSensor.get("color");
 
         //Sets direction of motors
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -60,12 +62,13 @@ public class MainAuto extends LinearOpMode {
         telemetry.addData("Status", "Resetting Encoders");
         telemetry.update();
 
-        //Sets up encoders
+        //Resets Encoders
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftDrive2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightDrive2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        //Sets correct motor mode
         leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDrive2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -80,20 +83,23 @@ public class MainAuto extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         colorSensor.enableLed(true);
-
-        // Step through each leg of the path,
+        
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-
         // drive forward 2.5 feet
         encoderDrive(DRIVE_SPEED, 30.0, 30.0, 10.0);
         //Sample
         //if (testIfGold() == true) {encoderDrive(DRIVE_SPEED, 36, 36, 4.0 );
         //}
         //place else statement here
-
+        //skipping this step for now ^
+    
         //Drive forward 3ft to the depot
         //Claim
+        intake.setPower(0.5);
+        sleep(1000);
+        intake.SetPower(0.0);
         // turn 135 degrees clockwise to point towards the crater
+        encoderDrive(TURN_SPEED, turnInPlaceCalc(135), turnInPlaceCalc(135) * -1, 5.0);
         //Drive 10 feet and park in the crater
 
 
@@ -135,11 +141,6 @@ public class MainAuto extends LinearOpMode {
             rightDrive.setPower(Math.abs(speed));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
-            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
-            // its target position, the motion will stop.  This is "safer" in the event that the robot will
-            // always end the motion as soon as possible.
-            // However, if you require that BOTH motors have finished their moves before the robot continues
-            // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
                       leftDrive.isBusy() && leftDrive2.isBusy() && rightDrive.isBusy() && rightDrive2.isBusy()) {
@@ -157,7 +158,7 @@ public class MainAuto extends LinearOpMode {
             // Turn off RUN_TO_POSITION
             leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-           // sleep(250000);   // optional pause after each move
+           // sleep(500);   // optional pause after each move
         }
     }
 
