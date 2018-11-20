@@ -80,7 +80,6 @@ public class MainTeleop extends LinearOpMode {
         rightDrive2 = hardwareMap.get(DcMotor.class, "right_drive2");
         intake = hardwareMap.get(DcMotor.class, "intake");
         lift = hardwareMap.get(DcMotor.class, "lift1");
-        outtake = hardwareMap.get(Servo.class, "servo1");
         colorSensor = hardwareMap.colorSensor.get("color");
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -163,7 +162,9 @@ public class MainTeleop extends LinearOpMode {
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-            // telemetry.addData("ColorSensor", "colo red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
+            telemetry.addData("Motor Encoders", "left1 %d left2 %d right1 %d right2 %d", leftDrive1.getCurrentPosition(), leftDrive2.getCurrentPosition(), rightDrive1.getCurrentPosition(), rightDrive2.getCurrentPosition());
+            //telemetry.addData("ColorSensor", "colo red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
+            sleep(150);
             telemetry.update();
         }
     }
