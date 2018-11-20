@@ -78,9 +78,9 @@ public class MainTeleop extends LinearOpMode {
         leftDrive2 = hardwareMap.get(DcMotor.class, "left_drive2");
         rightDrive1 = hardwareMap.get(DcMotor.class, "right_drive1");
         rightDrive2 = hardwareMap.get(DcMotor.class, "right_drive2");
-        intake = hardwareMap.get(DcMotor.class, "intake");
-        lift = hardwareMap.get(DcMotor.class, "lift1");
-        colorSensor = hardwareMap.colorSensor.get("color");
+ //       intake = hardwareMap.get(DcMotor.class, "intake");
+   //     lift = hardwareMap.get(DcMotor.class, "lift1");
+     //   colorSensor = hardwareMap.colorSensor.get("color");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -94,7 +94,7 @@ public class MainTeleop extends LinearOpMode {
         runtime.reset();
 
         //Enables color sensor LED
-        colorSensor.enableLed(true);
+       // colorSensor.enableLed(true);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -116,7 +116,7 @@ public class MainTeleop extends LinearOpMode {
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            leftPower = gamepad1.left_stick_y * 0.92;
+            leftPower = gamepad1.left_stick_y;
             rightPower = gamepad1.right_stick_y;
 
             // Send calculated power to wheels
@@ -128,13 +128,14 @@ public class MainTeleop extends LinearOpMode {
 
             //controls the intake: option 1
             if (gamepad2.left_trigger != 0) {
-                intake.setPower(0.5);
+                //intake.setPower(0.5);
             }
             else if (gamepad2.right_trigger != 0){
-                intake.setPower(-0.5);
+               // intake.setPower(-0.5);
             } else {
-                intake.setPower(0.0);
+              //  intake.setPower(0.0);
             }
+
 
 
             // this is an on and off control, where separate
