@@ -125,14 +125,6 @@ public class MainTeleop extends LinearOpMode {
             rightDrive1.setPower(rightPower);
             rightDrive2.setPower(rightPower);
 
-            //Controls the outtake
-          //  if (gamepad2.left_trigger != 0) {
-            //    outtake.setPosition(0.5);
-            //} else if (gamepad2.left_bumper) {
-              //  outtake.setPosition(1.0);
-            //} else {
-              //  outtake.setPosition(0.0);
-            //}
 
             //controls the intake: option 1
             if (gamepad2.left_trigger != 0) {

@@ -15,9 +15,9 @@ public class MainAuto extends LinearOpMode {
 
     // Declare OpMode members.
     private DcMotor leftDrive1 = null;
-    private DcMotor leftDrive2 = null;
+    private DcMotor leftDrive2 = null; // no encoder
     private DcMotor rightDrive1 = null;
-    private DcMotor rightDrive2 = null;
+    private DcMotor rightDrive2 = null; // no encoder
     private DcMotor intake = null;
     private DcMotor lift = null;
     private ColorSensor colorSensor;
@@ -63,22 +63,17 @@ public class MainAuto extends LinearOpMode {
         //Resets Encoders
         leftDrive1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightDrive1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftDrive2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightDrive2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
 
         //Sets correct motor mode
         leftDrive1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftDrive2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightDrive2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDrive1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0", "Starting at %7d %7d : %7d %7d",
                 leftDrive1.getCurrentPosition(),
                 leftDrive2.getCurrentPosition(),
                 rightDrive2.getCurrentPosition(),
                 rightDrive1.getCurrentPosition());
-
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
@@ -87,7 +82,7 @@ public class MainAuto extends LinearOpMode {
         
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // drive forward
-        encoderDrive(DRIVE_SPEED, 0.95 * 6, 6, 10);
+        encoderDrive(DRIVE_SPEED,  6, 6, 10);
         sleep(500);
 
         //Sample
@@ -125,9 +120,6 @@ public class MainAuto extends LinearOpMode {
         // We have to define targets for both of the motors on each side
         int newLeftTarget;
         int newRightTarget;
-        int newLeftTarget1;
-        int newRightTarget1;
-
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
@@ -135,27 +127,23 @@ public class MainAuto extends LinearOpMode {
 
             newLeftTarget = leftDrive1.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
             newRightTarget = rightDrive1.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-            newLeftTarget1 = leftDrive1.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newRightTarget1 = rightDrive2.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
             leftDrive1.setTargetPosition(newLeftTarget);
-            leftDrive2.setTargetPosition(newLeftTarget1);
             rightDrive1.setTargetPosition(newRightTarget);
-            rightDrive2.setTargetPosition(newRightTarget1);
 
             leftDrive1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            leftDrive2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightDrive1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightDrive2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //Set mode for "2" drives if it doesn't work 11/20/18
 
             // reset the timeout time and start motion.
             runtime.reset();
-            leftDrive1.setPower(Math.abs(speed) * 0.92);
-            leftDrive2.setPower(Math.abs(speed) * 0.92);
+            leftDrive1.setPower(Math.abs(speed));
+            leftDrive2.setPower(Math.abs(speed));
             rightDrive1.setPower(Math.abs(speed));
             rightDrive2.setPower(Math.abs(speed));
 
+
             // keep looping while we are still active, and there is time left, and both motors are running.
-            while (opModeIsActive() && leftDrive1.isBusy() && leftDrive2.isBusy() && rightDrive1.isBusy() && rightDrive2.isBusy())
+            while (opModeIsActive() && leftDrive1.isBusy() &&  rightDrive1.isBusy())
             {
                 // Display it for the driver.
                 telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
@@ -172,10 +160,8 @@ public class MainAuto extends LinearOpMode {
             rightDrive2.setPower(0);
             // Turn off RUN_TO_POSITION
             leftDrive1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftDrive2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightDrive1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightDrive2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-           // sleep(500);   // optional pause after each move
+            sleep(500);   // optional pause after each move
         }
     }
 
