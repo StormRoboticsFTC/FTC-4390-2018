@@ -128,12 +128,12 @@ public class MainTeleop extends LinearOpMode {
 
             //controls the intake: option 1
             if (gamepad2.left_trigger != 0) {
-                //intake.setPower(0.5);
+                intake.setPower(0.5);
             }
             else if (gamepad2.right_trigger != 0){
-               // intake.setPower(-0.5);
+                intake.setPower(-0.5);
             } else {
-              //  intake.setPower(0.0);
+                intake.setPower(0.0);
             }
 
 
@@ -143,13 +143,13 @@ public class MainTeleop extends LinearOpMode {
             // when the trigger is NOT pressed
 
             //controls the lift
-     //       if (gamepad2.dpad_up) {
-       //         lift.setPower(0.6);
-         //   } else if (gamepad2.dpad_down) {
-           //     lift.setPower(-0.6);
-            //} else {
-              //  lift.setPower(0.0);
-            //}
+           if (gamepad2.dpad_up) {
+                lift.setPower(0.6);
+            } else if (gamepad2.dpad_down) {
+                lift.setPower(-0.6);
+            } else {
+                lift.setPower(0.0);
+            }
 
 
             // Show the elapsed game time and wheel power.
