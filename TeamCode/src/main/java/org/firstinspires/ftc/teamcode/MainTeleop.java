@@ -120,10 +120,7 @@ public class MainTeleop extends LinearOpMode {
             rightPower = gamepad1.right_stick_y;
 
             // Send calculated power to wheels
-            leftDrive1.setPower(leftPower);
-            leftDrive2.setPower(leftPower);
-            rightDrive1.setPower(rightPower);
-            rightDrive2.setPower(rightPower);
+
 
 
             //controls the intake: option 1
@@ -152,6 +149,19 @@ public class MainTeleop extends LinearOpMode {
             //}
 
 
+            if (gamepad1.y) {
+                leftDrive1.setPower(0.6);
+                leftDrive2.setPower(0.6);
+                rightDrive2.setPower(-0.6);
+                rightDrive2.setPower(-0.6);
+            }
+            else{
+                leftDrive1.setPower(leftPower);
+                leftDrive2.setPower(leftPower);
+                rightDrive1.setPower(rightPower);
+                rightDrive2.setPower(rightPower);
+            }
+
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
@@ -160,5 +170,12 @@ public class MainTeleop extends LinearOpMode {
             sleep(150);
             telemetry.update();
         }
+
+
+
+
+
+
+
     }
 }
