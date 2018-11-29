@@ -63,8 +63,6 @@ public class MainTeleop extends LinearOpMode {
     private DcMotor intake = null;
     private DcMotor lift = null;
     private ColorSensor colorSensor;
-    private Servo outtake = null;
-
 
     @Override
     public void runOpMode() {
@@ -78,9 +76,9 @@ public class MainTeleop extends LinearOpMode {
         leftDrive2 = hardwareMap.get(DcMotor.class, "left_drive2");
         rightDrive1 = hardwareMap.get(DcMotor.class, "right_drive1");
         rightDrive2 = hardwareMap.get(DcMotor.class, "right_drive2");
- //       intake = hardwareMap.get(DcMotor.class, "intake");
-   //     lift = hardwareMap.get(DcMotor.class, "lift1");
-     //   colorSensor = hardwareMap.colorSensor.get("color");
+        intake = hardwareMap.get(DcMotor.class, "intake");
+        lift = hardwareMap.get(DcMotor.class, "lift1");
+        colorSensor = hardwareMap.colorSensor.get("color");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -144,9 +142,9 @@ public class MainTeleop extends LinearOpMode {
 
             //controls the lift
            if (gamepad2.dpad_up) {
-                lift.setPower(0.6);
-            } else if (gamepad2.dpad_down) {
                 lift.setPower(-0.6);
+            } else if (gamepad2.dpad_down) {
+                lift.setPower(0.6);
             } else {
                 lift.setPower(0.0);
             }
@@ -155,7 +153,7 @@ public class MainTeleop extends LinearOpMode {
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-            telemetry.addData("Motor Encoders", "left1 %d left2 %d right1 %d right2 %d", leftDrive1.getCurrentPosition(), leftDrive2.getCurrentPosition(), rightDrive1.getCurrentPosition(), rightDrive2.getCurrentPosition());
+            telemetry.addData("Motor Encoders", "left1 %d right1 %d", leftDrive1.getCurrentPosition(), rightDrive1.getCurrentPosition());
             //telemetry.addData("ColorSensor", "colo red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
             sleep(150);
             telemetry.update();

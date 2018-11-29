@@ -29,8 +29,8 @@ public class MainAuto extends LinearOpMode {
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double     DRIVE_SPEED             = 1;
-    static final double     TURN_SPEED              = 1;
+    static final double     DRIVE_SPEED             = 0.75;
+    static final double     TURN_SPEED              = 0.75;
 
     static final double TURNING_DIAMETER = 18.1; //This and TURNING_CIRCUMFERENCE are used for the turnInPlaceCalc method
     static final double TURNING_CIRCUMFERENCE = TURNING_DIAMETER * 3.1415;
@@ -82,9 +82,19 @@ public class MainAuto extends LinearOpMode {
         
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // drive forward
-        encoderDrive(DRIVE_SPEED,  6, 6, 10);
-        sleep(500);
+        lift.setPower(-0.6);
+        sleep(1000);
+        lift.setPower(0.0);
 
+        leftDrive1.setPower(DRIVE_SPEED);
+        leftDrive2.setPower(DRIVE_SPEED);
+        rightDrive1.setPower(DRIVE_SPEED);
+        rightDrive2.setPower(DRIVE_SPEED);
+        sleep(1300);
+        leftDrive1.setPower(0);
+        leftDrive2.setPower(0);
+        rightDrive1.setPower(0);
+        rightDrive2.setPower(0);
         //Sample
         //if (testIfGold() == true) {encoderDrive(DRIVE_SPEED, 36, 36, 4.0 );
         //}
@@ -94,9 +104,17 @@ public class MainAuto extends LinearOpMode {
         //Drive forward 3ft to the depot
         //Claim
         intake.setPower(0.5);
-        sleep(2000);
-        intake.setPower(0.0);
+        leftDrive1.setPower(-0.2);
+        leftDrive2.setPower(-0.2);
+        rightDrive1.setPower(-0.2);
+        rightDrive2.setPower(-0.2);
         sleep(1000);
+        leftDrive1.setPower(0.0);
+        leftDrive2.setPower(0.0);
+        rightDrive1.setPower(0.0);
+        rightDrive2.setPower(0.0);
+        intake.setPower(0.0);
+
         //encoderDrive(TURN_SPEED, 1, -1, 5);
         // turn 135 degrees clockwise to point towards the crater
         // encoderDrive(TURN_SPEED, turnInPlaceCalc(135), turnInPlaceCalc(135) * -1, 5.0);
@@ -127,11 +145,12 @@ public class MainAuto extends LinearOpMode {
 
             newLeftTarget = leftDrive1.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
             newRightTarget = rightDrive1.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-            leftDrive1.setTargetPosition(newLeftTarget);
-            rightDrive1.setTargetPosition(newRightTarget);
 
             leftDrive1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightDrive1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftDrive1.setTargetPosition(newLeftTarget);
+            rightDrive1.setTargetPosition(newRightTarget);
+
             //Set mode for "2" drives if it doesn't work 11/20/18
 
             // reset the timeout time and start motion.
