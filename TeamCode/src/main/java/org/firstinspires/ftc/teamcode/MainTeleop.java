@@ -153,7 +153,7 @@ public class MainTeleop extends LinearOpMode {
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-            telemetry.addData("Motor Encoders", "left1 %d right1 %d", leftDrive1.getCurrentPosition(), rightDrive1.getCurrentPosition());
+            telemetry.addData("Motor Encoders", "encoder: %d %d", leftDrive1.getCurrentPosition(),  rightDrive1.getCurrentPosition());
             //telemetry.addData("ColorSensor", "colo red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
             sleep(150);
             telemetry.update();

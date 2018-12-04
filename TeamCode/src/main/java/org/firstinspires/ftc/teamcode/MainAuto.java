@@ -24,7 +24,7 @@ public class MainAuto extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
     //Declares variables and constants
-    static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    //
+    static final double     COUNTS_PER_MOTOR_REV    = 560 ;    //
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
@@ -55,70 +55,42 @@ public class MainAuto extends LinearOpMode {
         leftDrive2.setDirection(DcMotor.Direction.REVERSE);
         rightDrive1.setDirection(DcMotor.Direction.FORWARD);
         rightDrive2.setDirection(DcMotor.Direction.FORWARD);
-
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");
         telemetry.update();
-
         //Resets Encoders
-        leftDrive1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightDrive1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-
-        //Sets correct motor mode
-        leftDrive1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightDrive1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Path0", "Starting at %7d %7d : %7d %7d",
-                leftDrive1.getCurrentPosition(),
-                leftDrive2.getCurrentPosition(),
-                rightDrive2.getCurrentPosition(),
-                rightDrive1.getCurrentPosition());
+        //telemetry.addData("Path0", "Starting at %7d",
+       //         rightDrive1.getCurrentPosition());
         telemetry.update();
-
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         colorSensor.enableLed(true);
-        
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        // drive forward
-        lift.setPower(-0.6);
-        sleep(1000);
-        lift.setPower(0.0);
 
-        leftDrive1.setPower(DRIVE_SPEED);
-        leftDrive2.setPower(DRIVE_SPEED);
-        rightDrive1.setPower(DRIVE_SPEED);
-        rightDrive2.setPower(DRIVE_SPEED);
-        sleep(1300);
-        leftDrive1.setPower(0);
-        leftDrive2.setPower(0);
-        rightDrive1.setPower(0);
-        rightDrive2.setPower(0);
-        //Sample
-        //if (testIfGold() == true) {encoderDrive(DRIVE_SPEED, 36, 36, 4.0 );
-        //}
-        //place else statement here
-        //skipping this step for now ^
+        //This is for testing the gearboxes
+        //rightDrive1.setPower(5.0);
+        //sleep(5000);
+        //rightDrive1.setPower(0.0);
+        //rightDrive2.setPower(5.0);
+        //sleep(5000);
+        //rightDrive2.setPower(0.0);
+        //leftDrive1.setPower(5.0);
+        //sleep(5000);
+        //leftDrive1.setPower(0.0);
+        //leftDrive2.setPower(5.0);
+        //sleep(5000);
+        //leftDrive2.setPower(0.0);
 
-        //Drive forward 3ft to the depot
-        //Claim
-        intake.setPower(0.5);
-        leftDrive1.setPower(-0.2);
-        leftDrive2.setPower(-0.2);
-        rightDrive1.setPower(-0.2);
-        rightDrive2.setPower(-0.2);
-        sleep(1000);
-        leftDrive1.setPower(0.0);
-        leftDrive2.setPower(0.0);
-        rightDrive1.setPower(0.0);
-        rightDrive2.setPower(0.0);
-        intake.setPower(0.0);
+        //Actual program
+        //Drops robot
+        lift.setPower(-0.75);
+        sleep(4250);
+        //Clear bar
+        lift.setPower(0.45);
+        sleep(0500);
 
-        //encoderDrive(TURN_SPEED, 1, -1, 5);
-        // turn 135 degrees clockwise to point towards the crater
-        // encoderDrive(TURN_SPEED, turnInPlaceCalc(135), turnInPlaceCalc(135) * -1, 5.0);
-        //Drive 10 feet and park in the crater
 
         //Adds telemetry data about path
         telemetry.addData("Path", "Complete");
@@ -140,45 +112,31 @@ public class MainAuto extends LinearOpMode {
         int newRightTarget;
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
-
             // Determine new target position for each motor, and pass to motor controller
-
-            newLeftTarget = leftDrive1.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
             newRightTarget = rightDrive1.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-
-            leftDrive1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightDrive1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            leftDrive1.setTargetPosition(newLeftTarget);
             rightDrive1.setTargetPosition(newRightTarget);
-
             //Set mode for "2" drives if it doesn't work 11/20/18
-
             // reset the timeout time and start motion.
             runtime.reset();
             leftDrive1.setPower(Math.abs(speed));
             leftDrive2.setPower(Math.abs(speed));
             rightDrive1.setPower(Math.abs(speed));
             rightDrive2.setPower(Math.abs(speed));
-
-
             // keep looping while we are still active, and there is time left, and both motors are running.
-            while (opModeIsActive() && leftDrive1.isBusy() &&  rightDrive1.isBusy())
+            while (opModeIsActive() && rightDrive1.isBusy())
             {
                 // Display it for the driver.
-                telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
-                telemetry.addData("Path2",  "Running at %7d :%7d",
-                        leftDrive1.getCurrentPosition(),
-                        rightDrive1.getCurrentPosition());
+                //telemetry.addData("Path1",  "Running to %7d ",  newRightTarget);
+                //telemetry.addData("Path2",  "Running at %7d ", rightDrive1.getCurrentPosition());
                 telemetry.update();
             }
-
             // Stop all motion;
             leftDrive1.setPower(0);
             leftDrive2.setPower(0);
             rightDrive1.setPower(0);
             rightDrive2.setPower(0);
             // Turn off RUN_TO_POSITION
-            leftDrive1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightDrive1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             sleep(500);   // optional pause after each move
         }
