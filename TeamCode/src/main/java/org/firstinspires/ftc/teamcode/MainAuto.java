@@ -50,11 +50,12 @@ public class MainAuto extends LinearOpMode {
         lift = hardwareMap.get(DcMotor.class, "lift1"); //Motor that controls the lift
         colorSensor = hardwareMap.colorSensor.get("color"); //Color sensor for sampling
 
-        //Sets direction of motorsR
+        //Sets direction of motors
         leftDrive1.setDirection(DcMotor.Direction.REVERSE); //Left drive is reversed
         leftDrive2.setDirection(DcMotor.Direction.REVERSE);
         rightDrive1.setDirection(DcMotor.Direction.FORWARD);
         rightDrive2.setDirection(DcMotor.Direction.FORWARD);
+
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");
         telemetry.update();
@@ -76,14 +77,18 @@ public class MainAuto extends LinearOpMode {
         lift.setPower(0.0);
         //Backs away from bar
         msDrive(-0.5, -0.5, 250);
-        msDrive(0.5, -0.5, 1225);
+        //Turns to depot
+        msDrive(0.5, -0.5, 1260);
+        //Drives to crater and lowers lift
         lift.setPower(0.65);
-        msDrive(0.75,0.75,1250);
+        msDrive(0.75,0.75,1300);
         lift.setPower(0.0);
-        intake.setPower(0.75);
-        sleep(1500);
+        //Claims
+        intake.setPower(0.5);
+        sleep(500);
         intake.setPower(0.0);
-
+        msDrive(-0.75, -0.75, 250);
+        //
         //Adds telemetry data about path
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -138,6 +143,8 @@ public class MainAuto extends LinearOpMode {
     public double turnInPlaceCalc(int degrees){
         return ((degrees / 360) * TURNING_CIRCUMFERENCE);
     }
+
+    //Function for making the robot move based off of time
     public void msDrive(double leftSpeed, double rightSpeed, long ms) {
         leftDrive1.setPower(leftSpeed);
         leftDrive2.setPower(leftSpeed);
