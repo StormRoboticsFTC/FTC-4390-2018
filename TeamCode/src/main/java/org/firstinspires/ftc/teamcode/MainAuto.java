@@ -50,7 +50,7 @@ public class MainAuto extends LinearOpMode {
         lift = hardwareMap.get(DcMotor.class, "lift1"); //Motor that controls the lift
         colorSensor = hardwareMap.colorSensor.get("color"); //Color sensor for sampling
 
-        //Sets direction of motors
+        //Sets direction of motorsR
         leftDrive1.setDirection(DcMotor.Direction.REVERSE); //Left drive is reversed
         leftDrive2.setDirection(DcMotor.Direction.REVERSE);
         rightDrive1.setDirection(DcMotor.Direction.FORWARD);
@@ -59,7 +59,7 @@ public class MainAuto extends LinearOpMode {
         telemetry.addData("Status", "Resetting Encoders");
         telemetry.update();
         //Resets Encoders
-        rightDrive1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+       // rightDrive1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // Send telemetry message to indicate successful Encoder reset
         //telemetry.addData("Path0", "Starting at %7d",
        //         rightDrive1.getCurrentPosition());
@@ -69,28 +69,20 @@ public class MainAuto extends LinearOpMode {
         colorSensor.enableLed(true);
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
 
-        //This is for testing the gearboxes
-        //rightDrive1.setPower(5.0);
-        //sleep(5000);
-        //rightDrive1.setPower(0.0);
-        //rightDrive2.setPower(5.0);
-        //sleep(5000);
-        //rightDrive2.setPower(0.0);
-        //leftDrive1.setPower(5.0);
-        //sleep(5000);
-        //leftDrive1.setPower(0.0);
-        //leftDrive2.setPower(5.0);
-        //sleep(5000);
-        //leftDrive2.setPower(0.0);
-
         //Actual program
         //Drops robot
         lift.setPower(-0.75);
-        sleep(4250);
-        //Clear bar
-        lift.setPower(0.45);
-        sleep(0500);
-
+        sleep(2500);
+        lift.setPower(0.0);
+        //Backs away from bar
+        msDrive(-0.5, -0.5, 250);
+        msDrive(0.5, -0.5, 1225);
+        lift.setPower(0.65);
+        msDrive(0.75,0.75,1250);
+        lift.setPower(0.0);
+        intake.setPower(0.75);
+        sleep(1500);
+        intake.setPower(0.0);
 
         //Adds telemetry data about path
         telemetry.addData("Path", "Complete");
@@ -146,7 +138,17 @@ public class MainAuto extends LinearOpMode {
     public double turnInPlaceCalc(int degrees){
         return ((degrees / 360) * TURNING_CIRCUMFERENCE);
     }
-
+    public void msDrive(double leftSpeed, double rightSpeed, long ms) {
+        leftDrive1.setPower(leftSpeed);
+        leftDrive2.setPower(leftSpeed);
+        rightDrive1.setPower(rightSpeed);
+        rightDrive2.setPower(rightSpeed);
+        sleep(ms);
+        leftDrive1.setPower(0.0);
+        leftDrive2.setPower(0.0);
+        rightDrive1.setPower(0.0);
+        rightDrive2.setPower(0.0);
+    }
     //Tests for gold color (Sampling)
     public boolean testIfGold() {
         boolean isGold = false;
