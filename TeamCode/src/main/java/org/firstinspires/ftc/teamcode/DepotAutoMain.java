@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-@Autonomous(name="MainAuto", group="Autonomous")
+@Autonomous(name="DepotAuto (main)", group="Autonomous")
 //@Disabled
-public class MainAuto extends LinearOpMode {
+public class DepotAutoMain extends LinearOpMode {
 
     // Declare OpMode members.
     private DcMotor leftDrive1 = null;
