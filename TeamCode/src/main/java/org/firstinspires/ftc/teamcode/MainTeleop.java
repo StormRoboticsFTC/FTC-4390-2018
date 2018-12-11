@@ -135,7 +135,6 @@ public class MainTeleop extends LinearOpMode {
             }
 
 
-
             // this is an on and off control, where separate
             // an alternate would be to use the trigger to turn it on and use an else to turn it off
             // when the trigger is NOT pressed
@@ -157,6 +156,9 @@ public class MainTeleop extends LinearOpMode {
             //telemetry.addData("ColorSensor", "colo red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
             sleep(150);
             telemetry.update();
+
+            //spinbot 3.0
+            // ^ dead
         }
     }
 }
