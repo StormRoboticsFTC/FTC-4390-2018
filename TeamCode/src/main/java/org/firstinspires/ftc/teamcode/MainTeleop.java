@@ -154,7 +154,6 @@ public class MainTeleop extends LinearOpMode {
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.addData("Motor Encoders", "encoder: %d %d", leftDrive1.getCurrentPosition(),  rightDrive1.getCurrentPosition());
             //telemetry.addData("ColorSensor", "colo red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
-            sleep(150);
             telemetry.update();
 
             //spinbot 3.0
