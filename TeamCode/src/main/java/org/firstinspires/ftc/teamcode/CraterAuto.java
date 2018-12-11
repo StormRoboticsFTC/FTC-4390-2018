@@ -13,9 +13,7 @@ public class CraterAuto extends LinearOpMode {
 
     // Declare OpMode members.
     private DcMotor leftDrive1 = null;
-    private DcMotor leftDrive2 = null; // no encoder
     private DcMotor rightDrive1 = null;
-    private DcMotor rightDrive2 = null; // no encoder
     private DcMotor intake = null;
     private DcMotor lift = null;
     private ColorSensor colorSensor;
@@ -41,18 +39,14 @@ public class CraterAuto extends LinearOpMode {
         // step (using the FTC Robot Controller app on the phone).
 
         leftDrive1 = hardwareMap.get(DcMotor.class, "left_drive1"); //First left drive motor
-        leftDrive2 = hardwareMap.get(DcMotor.class, "left_drive2"); //Second left drive motor
         rightDrive1 = hardwareMap.get(DcMotor.class, "right_drive1"); //First right drive motor
-        rightDrive2 = hardwareMap.get(DcMotor.class, "right_drive2"); //Second right drive motor
         intake = hardwareMap.get(DcMotor.class, "intake"); //Motor that controls the rubber band intake
         lift = hardwareMap.get(DcMotor.class, "lift1"); //Motor that controls the lift
         colorSensor = hardwareMap.colorSensor.get("color"); //Color sensor for sampling
 
         //Sets direction of motors
         leftDrive1.setDirection(DcMotor.Direction.REVERSE); //Left drive is reversed
-        leftDrive2.setDirection(DcMotor.Direction.REVERSE);
         rightDrive1.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive2.setDirection(DcMotor.Direction.FORWARD);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");
@@ -70,18 +64,21 @@ public class CraterAuto extends LinearOpMode {
 
         //Actual program
         //Drops robot
-        lift.setPower(-0.75);
-        sleep(2500);
-        lift.setPower(0.0);
+        //lift.setPower(-0.75);
+       // sleep(2500);
+       // lift.setPower(0.0);
         //Backs away from bar
-        msDrive(-0.5, -0.5, 250);
+       // msDrive(-0.5, -0.5, 250);
 
-        msDrive(0.5, -0.5, 900);
+        //msDrive(0.5, -0.5, 900);
 
-        lift.setPower(0.65);
-        msDrive(0.75,0.75,950);
-        lift.setPower(0.0);
+       // lift.setPower(0.65);
+      //  msDrive(0.75,0.75,950);
+      //  lift.setPower(0.0);
         //Adds telemetry data about path
+
+        encoderDrive(DRIVE_SPEED, 24.0, 100.0);
+
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
@@ -94,40 +91,33 @@ public class CraterAuto extends LinearOpMode {
      *  3) Driver stops the opmode running.
      */
     public void encoderDrive(double speed,
-                             double leftInches, double rightInches,
+                             double inches,
                              double timeoutS) {
         // We have to define targets for both of the motors on each side
-        int newLeftTarget;
         int newRightTarget;
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
             // Determine new target position for each motor, and pass to motor controller
-            newRightTarget = rightDrive1.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            newRightTarget = rightDrive1.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
             rightDrive1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightDrive1.setTargetPosition(newRightTarget);
             //Set mode for "2" drives if it doesn't work 11/20/18
             // reset the timeout time and start motion.
             runtime.reset();
             leftDrive1.setPower(Math.abs(speed));
-            leftDrive2.setPower(Math.abs(speed));
             rightDrive1.setPower(Math.abs(speed));
-            rightDrive2.setPower(Math.abs(speed));
             // keep looping while we are still active, and there is time left, and both motors are running.
             while (opModeIsActive() && rightDrive1.isBusy())
             {
-                // Display it for the driver.
-                //telemetry.addData("Path1",  "Running to %7d ",  newRightTarget);
-                //telemetry.addData("Path2",  "Running at %7d ", rightDrive1.getCurrentPosition());
+                telemetry.addData("Path1",  "Running to %7d ",  newRightTarget);
+                telemetry.addData("Path2",  "Running at %7d ", rightDrive1.getCurrentPosition());
                 telemetry.update();
             }
             // Stop all motion;
             leftDrive1.setPower(0);
-            leftDrive2.setPower(0);
             rightDrive1.setPower(0);
-            rightDrive2.setPower(0);
             // Turn off RUN_TO_POSITION
             rightDrive1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            sleep(500);   // optional pause after each move
         }
     }
 
@@ -139,14 +129,10 @@ public class CraterAuto extends LinearOpMode {
     //Function for making the robot move based off of time
     public void msDrive(double leftSpeed, double rightSpeed, long ms) {
         leftDrive1.setPower(leftSpeed);
-        leftDrive2.setPower(leftSpeed);
         rightDrive1.setPower(rightSpeed);
-        rightDrive2.setPower(rightSpeed);
         sleep(ms);
         leftDrive1.setPower(0.0);
-        leftDrive2.setPower(0.0);
         rightDrive1.setPower(0.0);
-        rightDrive2.setPower(0.0);
     }
 
     //Tests for gold color (Sampling)

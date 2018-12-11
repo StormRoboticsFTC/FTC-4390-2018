@@ -7,15 +7,13 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="CraterAuto", group="Autonomous")
+@Autonomous(name="baddd", group="Autonomous")
 //@Disabled
 public class CraterAutoClaim extends LinearOpMode {
 
     // Declare OpMode members.
     private DcMotor leftDrive1 = null;
-    private DcMotor leftDrive2 = null; // no encoder
     private DcMotor rightDrive1 = null;
-    private DcMotor rightDrive2 = null; // no encoder
     private DcMotor intake = null;
     private DcMotor lift = null;
     private ColorSensor colorSensor;
@@ -41,18 +39,14 @@ public class CraterAutoClaim extends LinearOpMode {
         // step (using the FTC Robot Controller app on the phone).
 
         leftDrive1 = hardwareMap.get(DcMotor.class, "left_drive1"); //First left drive motor
-        leftDrive2 = hardwareMap.get(DcMotor.class, "left_drive2"); //Second left drive motor
         rightDrive1 = hardwareMap.get(DcMotor.class, "right_drive1"); //First right drive motor
-        rightDrive2 = hardwareMap.get(DcMotor.class, "right_drive2"); //Second right drive motor
         intake = hardwareMap.get(DcMotor.class, "intake"); //Motor that controls the rubber band intake
         lift = hardwareMap.get(DcMotor.class, "lift1"); //Motor that controls the lift
         colorSensor = hardwareMap.colorSensor.get("color"); //Color sensor for sampling
 
         //Sets direction of motors
         leftDrive1.setDirection(DcMotor.Direction.REVERSE); //Left drive is reversed
-        leftDrive2.setDirection(DcMotor.Direction.REVERSE);
         rightDrive1.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive2.setDirection(DcMotor.Direction.FORWARD);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");
@@ -66,6 +60,8 @@ public class CraterAutoClaim extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         colorSensor.enableLed(true);
+
+
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
 
         //Actual program
@@ -76,11 +72,15 @@ public class CraterAutoClaim extends LinearOpMode {
         //Backs away from bar
         msDrive(-0.5, -0.5, 250);
         lift.setPower(0.75);
-        msDrive(0.5, -0.5, 450);
+                msDrive(0.5, -0.5, 450);
         lift.setPower(0.0);
+        //Drive forward
         msDrive(0.5, 0.5, 500);
+        //Turn right
         msDrive(0.5,-0.5,450);
+        //Drive forward
         msDrive(0.75,0.75,1000);
+        //Suck up minerals
         intake.setPower(0.5);
         sleep(500);
         intake.setPower(0.0);
@@ -97,59 +97,50 @@ public class CraterAutoClaim extends LinearOpMode {
      *  3) Driver stops the opmode running.
      */
     public void encoderDrive(double speed,
-                             double leftInches, double rightInches,
+                             double inches,
                              double timeoutS) {
         // We have to define targets for both of the motors on each side
-        int newLeftTarget;
         int newRightTarget;
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
             // Determine new target position for each motor, and pass to motor controller
-            newRightTarget = rightDrive1.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            newRightTarget = rightDrive1.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
             rightDrive1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightDrive1.setTargetPosition(newRightTarget);
             //Set mode for "2" drives if it doesn't work 11/20/18
             // reset the timeout time and start motion.
             runtime.reset();
             leftDrive1.setPower(Math.abs(speed));
-            leftDrive2.setPower(Math.abs(speed));
+
             rightDrive1.setPower(Math.abs(speed));
-            rightDrive2.setPower(Math.abs(speed));
+            telemetry.addData("spot1", rightDrive1.isBusy());
             // keep looping while we are still active, and there is time left, and both motors are running.
-            while (opModeIsActive() && rightDrive1.isBusy())
+            while (opModeIsActive() && rightDrive1.isBusy() && runtime.seconds() < timeoutS)
             {
-                // Display it for the driver.
-                //telemetry.addData("Path1",  "Running to %7d ",  newRightTarget);
-                //telemetry.addData("Path2",  "Running at %7d ", rightDrive1.getCurrentPosition());
+                telemetry.addData("Path1",  "Running to %d ",  newRightTarget);
+                telemetry.addData("Path2",  "Running at %d ", rightDrive1.getCurrentPosition());
                 telemetry.update();
             }
             // Stop all motion;
             leftDrive1.setPower(0);
-            leftDrive2.setPower(0);
+
             rightDrive1.setPower(0);
-            rightDrive2.setPower(0);
+
             // Turn off RUN_TO_POSITION
             rightDrive1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            sleep(500);   // optional pause after each move
         }
     }
-
-    //Does the calculations for turning in place
+    //Does the calculations for turning in plac
     public double turnInPlaceCalc(int degrees){
         return ((degrees / 360) * TURNING_CIRCUMFERENCE);
     }
-
     //Function for making the robot move based off of time
     public void msDrive(double leftSpeed, double rightSpeed, long ms) {
         leftDrive1.setPower(leftSpeed);
-        leftDrive2.setPower(leftSpeed);
         rightDrive1.setPower(rightSpeed);
-        rightDrive2.setPower(rightSpeed);
         sleep(ms);
         leftDrive1.setPower(0.0);
-        leftDrive2.setPower(0.0);
         rightDrive1.setPower(0.0);
-        rightDrive2.setPower(0.0);
     }
 
     //Tests for gold color (Sampling)
