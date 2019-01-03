@@ -66,27 +66,11 @@ public class CraterAutoClaim extends LinearOpMode {
 
         //Actual program
         //Drops robot
-        lift.setPower(-0.75);
-        sleep(2500);
-        lift.setPower(0.0);
-        //Backs away from bar
-        msDrive(-0.5, -0.5, 250);
-        lift.setPower(0.75);
-                msDrive(0.5, -0.5, 450);
-        lift.setPower(0.0);
-        //Drive forward
-        msDrive(0.5, 0.5, 500);
-        //Turn right
-        msDrive(0.5,-0.5,450);
-        //Drive forward
-        msDrive(0.75,0.75,1000);
-        //Suck up minerals
-        intake.setPower(0.5);
-        sleep(500);
-        intake.setPower(0.0);
-        //Adds telemetry data about path
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
+        leftDrive1.setPower(0.75);
+        rightDrive1.setPower(0.75);
+        sleep(10000);
+        leftDrive1.setPower(0.0);
+        rightDrive1.setPower(0.0);
     }
     /*
      *  Method to perform a relative move, based on encoder counts.

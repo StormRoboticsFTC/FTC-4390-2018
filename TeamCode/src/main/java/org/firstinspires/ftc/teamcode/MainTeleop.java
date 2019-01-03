@@ -60,6 +60,7 @@ public class MainTeleop extends LinearOpMode {
     private DcMotor intake = null;
     private DcMotor lift = null;
     private ColorSensor colorSensor;
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -80,7 +81,7 @@ public class MainTeleop extends LinearOpMode {
         waitForStart();
         runtime.reset();
         //Enables color sensor LED
-       // colorSensor.enableLed(true);
+        // colorSensor.enableLed(true);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             // Setup a variable for each drive wheel to save power level for telemetry
@@ -105,8 +106,7 @@ public class MainTeleop extends LinearOpMode {
             //controls the intake: option 1
             if (gamepad2.left_trigger != 0) {
                 intake.setPower(0.5);
-            }
-            else if (gamepad2.right_trigger != 0){
+            } else if (gamepad2.right_trigger != 0) {
                 intake.setPower(-0.5);
             } else {
                 intake.setPower(0.0);
@@ -115,19 +115,39 @@ public class MainTeleop extends LinearOpMode {
             // an alternate would be to use the trigger to turn it on and use an else to turn it off
             // when the trigger is NOT pressed
             //controls the lift
-           if (gamepad2.dpad_up) {
+            if (gamepad2.dpad_up) {
                 lift.setPower(-0.6);
             } else if (gamepad2.dpad_down) {
                 lift.setPower(0.6);
             } else {
                 lift.setPower(0.0);
             }
+
+            if (gamepad2.y) {
+                telemetry.addData("ColorSensor", "colo red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
+                telemetry.addData("gold:", testIfGold());
+                telemetry.update();
+                sleep(5000);
+            }
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-            telemetry.addData("Motor Encoders", "encoder: %d %d", leftDrive1.getCurrentPosition(),  rightDrive1.getCurrentPosition());
+            telemetry.addData("Motor Encoders", "encoder: %d %d", leftDrive1.getCurrentPosition(), rightDrive1.getCurrentPosition());
             //telemetry.addData("ColorSensor", "colo red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
             telemetry.update();
         }
     }
+
+    public boolean testIfGold() {
+        boolean isGold = false;
+        int red = colorSensor.red();
+        int green = colorSensor.green();
+        int blue = colorSensor.blue();
+        int alpha = colorSensor.alpha();
+        if ((red / green) > 2.55 && (red / green) < 2.85 && (green / blue) > 0.45 && (green / blue) < 0.55) {
+            isGold = true;
+        }
+        return isGold;
+    }
+
 }
