@@ -144,7 +144,7 @@ public class MainTeleop extends LinearOpMode {
         int green = colorSensor.green();
         int blue = colorSensor.blue();
         int alpha = colorSensor.alpha();
-        if ((red / green) > 2.55 && (red / green) < 2.85 && (green / blue) > 0.45 && (green / blue) < 0.55) {
+        if ((blue / green) > 2.55 && (blue / green) < 2.85 && (green / red) > 0.45 && (green / red) < 0.55) {
             isGold = true;
         }
         return isGold;
