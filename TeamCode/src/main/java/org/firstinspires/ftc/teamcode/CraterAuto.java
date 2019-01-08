@@ -64,20 +64,25 @@ public class CraterAuto extends LinearOpMode {
 
         //Actual program
         //Drops robot
-        //lift.setPower(-0.75);
-       // sleep(2500);
-       // lift.setPower(0.0);
+        lift.setPower(-0.75);
+        sleep(2500);
+        lift.setPower(0.0);
         //Backs away from bar
-       // msDrive(-0.5, -0.5, 250);
-
-        //msDrive(0.5, -0.5, 900);
+        msDrive(-0.5, -0.5, 250);
+        //Turns to depot
+        msDrive(0.5, -0.5, 900);
+        //Yeets robot to depot
+        msDrive(0.35, 0.7, 2150);
+        msDrive(0.75,0.75,200);
+        intake.setPower(0.5);
+        msDrive(-0.3,-0.3,500);
+        intake.setPower(0.0);
 
        // lift.setPower(0.65);
       //  msDrive(0.75,0.75,950);
       //  lift.setPower(0.0);
         //Adds telemetry data about path
 
-        encoderDrive(DRIVE_SPEED, 24.0, 100.0);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
