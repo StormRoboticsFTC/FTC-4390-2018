@@ -124,7 +124,9 @@ public class MainTeleop extends LinearOpMode {
             }
 
             if (gamepad2.y) {
-                telemetry.addData("ColorSensor", "colo red %d blue %d green %d ", colorSensor.red(), colorSensor.blue(), colorSensor.green());
+                float one = (float)colorSensor.red()/(float)colorSensor.blue();
+                float two = (float)colorSensor.blue()/(float)colorSensor.green();
+                telemetry.addData("ColorSensor", "colo red %f blue %f green ",one, two);
                 telemetry.addData("gold:", testIfGold());
                 telemetry.update();
                 sleep(5000);
@@ -139,15 +141,12 @@ public class MainTeleop extends LinearOpMode {
     }
 
     public boolean testIfGold() {
-        boolean isGold = false;
-        int red = colorSensor.red();
-        int green = colorSensor.green();
-        int blue = colorSensor.blue();
-        int alpha = colorSensor.alpha();
-        if ((red / green) > 2.55 && (red / green) < 2.85 && (green / blue) > 0.45 && (green / blue) < 0.55) {
-            isGold = true;
-        }
-        return isGold;
-    }
+       // boolean isGold = false;
+        float red = (float)colorSensor.red();
+        float green = (float)colorSensor.green();
+        float blue = (float)colorSensor.blue();
 
+     //   int alpha = colorSensor.alpha()'
+        return (((red / blue) > 1.5) && ((red / blue) < 3.2) && ((blue / green) > 0.37) && ((blue / green) < 0.68));
+    }
 }
