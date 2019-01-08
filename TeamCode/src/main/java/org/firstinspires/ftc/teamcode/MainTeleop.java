@@ -141,6 +141,7 @@ public class MainTeleop extends LinearOpMode {
     }
 
     public boolean testIfGold() {
+<<<<<<< HEAD
        // boolean isGold = false;
         float red = (float)colorSensor.red();
         float green = (float)colorSensor.green();
@@ -149,4 +150,17 @@ public class MainTeleop extends LinearOpMode {
      //   int alpha = colorSensor.alpha()'
         return (((red / blue) > 1.5) && ((red / blue) < 3.2) && ((blue / green) > 0.37) && ((blue / green) < 0.68));
     }
+=======
+        boolean isGold = false;
+        int red = colorSensor.red();
+        int green = colorSensor.green();
+        int blue = colorSensor.blue();
+        int alpha = colorSensor.alpha();
+        if ((blue / green) > 2.55 && (blue / green) < 2.85 && (green / red) > 0.45 && (green / red) < 0.55) {
+            isGold = true;
+        }
+        return isGold;
+    }
+
+>>>>>>> d4819af04d64c0b326dd0420457963aa1938fbf3
 }
