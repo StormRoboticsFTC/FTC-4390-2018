@@ -129,14 +129,12 @@ public class CraterAutoClaim extends LinearOpMode {
 
     //Tests for gold color (Sampling)
     public boolean testIfGold() {
-        boolean isGold = false;
-        int red = colorSensor.red();
-        int green = colorSensor.green();
-        int blue = colorSensor.blue();
-        int alpha = colorSensor.alpha();
-        if (green >= (red * 0.25) && green <= (red * 0.75) && blue <=10 && alpha >= green && alpha <= red) {
-            isGold = true;
-        }
-        return isGold;
+        // boolean isGold = false;
+        float red = (float)colorSensor.red();
+        float green = (float)colorSensor.green();
+        float blue = (float)colorSensor.blue();
+
+        //   int alpha = colorSensor.alpha()'
+        return (((red / blue) > 1.5) && ((red / blue) < 3.2) && ((blue / green) > 0.37) && ((blue / green) < 0.68));
     }
 }
