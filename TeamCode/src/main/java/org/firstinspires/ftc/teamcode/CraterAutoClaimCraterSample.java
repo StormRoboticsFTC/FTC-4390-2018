@@ -7,9 +7,9 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="CraterAuto", group="Autonomous")
+@Autonomous(name="CraterAutoClaimCraterSample", group="Autonomous")
 //@Disabled
-public class CraterAuto extends LinearOpMode {
+public class CraterAutoClaimCraterSample extends LinearOpMode {
 
     // Declare OpMode members.
     private DcMotor leftDrive1 = null;
@@ -60,6 +60,8 @@ public class CraterAuto extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         colorSensor.enableLed(true);
+
+
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
 
         //Actual program
@@ -69,23 +71,21 @@ public class CraterAuto extends LinearOpMode {
         lift.setPower(0.0);
         //Backs away from bar
         msDrive(-0.5, -0.5, 250);
-        //Turns to depot
+        //Turns
         msDrive(0.5, -0.5, 900);
+        //Samples
+        if (testIfGold()) {
+            msDrive(0.5,0.5,600);
+        }
         //Yeets robot to depot
-        msDrive(0.35, 0.7, 2150);
-        msDrive(0.75,0.75,200);
-        intake.setPower(0.5);
-        msDrive(-0.3,-0.3,500);
-        intake.setPower(0.0);
-
-       // lift.setPower(0.65);
-      //  msDrive(0.75,0.75,950);
-      //  lift.setPower(0.0);
-        //Adds telemetry data about path
-
-
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
+        //msDrive(0.35, 0.7, 2175);
+        //msDrive(0.75,0.75,1400);
+        //Claims
+        intake.setPower(0.6);
+        //msDrive(-0.3,-0.3,550);
+        //intake.setPower(0.0);
+        //Backs up to crater
+        //msDrive(-0.8, -0.8, 2675);
     }
     /*
      *  Method to perform a relative move, based on encoder counts.
@@ -110,27 +110,29 @@ public class CraterAuto extends LinearOpMode {
             // reset the timeout time and start motion.
             runtime.reset();
             leftDrive1.setPower(Math.abs(speed));
+
             rightDrive1.setPower(Math.abs(speed));
+            telemetry.addData("spot1", rightDrive1.isBusy());
             // keep looping while we are still active, and there is time left, and both motors are running.
-            while (opModeIsActive() && rightDrive1.isBusy())
+            while (opModeIsActive() && rightDrive1.isBusy() && runtime.seconds() < timeoutS)
             {
-                telemetry.addData("Path1",  "Running to %7d ",  newRightTarget);
-                telemetry.addData("Path2",  "Running at %7d ", rightDrive1.getCurrentPosition());
+                telemetry.addData("Path1",  "Running to %d ",  newRightTarget);
+                telemetry.addData("Path2",  "Running at %d ", rightDrive1.getCurrentPosition());
                 telemetry.update();
             }
             // Stop all motion;
             leftDrive1.setPower(0);
+
             rightDrive1.setPower(0);
+
             // Turn off RUN_TO_POSITION
             rightDrive1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-
-    //Does the calculations for turning in place
+    //Does the calculations for turning in plac
     public double turnInPlaceCalc(int degrees){
         return ((degrees / 360) * TURNING_CIRCUMFERENCE);
     }
-
     //Function for making the robot move based off of time
     public void msDrive(double leftSpeed, double rightSpeed, long ms) {
         leftDrive1.setPower(leftSpeed);
@@ -142,14 +144,12 @@ public class CraterAuto extends LinearOpMode {
 
     //Tests for gold color (Sampling)
     public boolean testIfGold() {
-        boolean isGold = false;
-        int red = colorSensor.red();
-        int green = colorSensor.green();
-        int blue = colorSensor.blue();
-        int alpha = colorSensor.alpha();
-        if (green >= (red * 0.25) && green <= (red * 0.75) && blue <=10 && alpha >= green && alpha <= red) {
-            isGold = true;
-        }
-        return isGold;
+        // boolean isGold = false;
+        float red = (float)colorSensor.red();
+        float green = (float)colorSensor.green();
+        float blue = (float)colorSensor.blue();
+
+        //   int alpha = colorSensor.alpha()'
+        return (((red / blue) > 1.5) && ((red / blue) < 3.2) && ((blue / green) > 0.37) && ((blue / green) < 0.68));
     }
 }

@@ -90,7 +90,7 @@ public class MainTeleop extends LinearOpMode {
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
             // POV Mode uses left stick to go forward, and right stick to turn.
-            //
+
             // - This uses basic math to combine motions and is easier to drive straight.
             //double drive = -gamepad1.left_stick_y;
             //double turn  =  gamepad1.right_stick_x;
@@ -124,12 +124,20 @@ public class MainTeleop extends LinearOpMode {
             }
 
             if (gamepad2.y) {
-                float one = (float)colorSensor.red()/(float)colorSensor.blue();
-                float two = (float)colorSensor.blue()/(float)colorSensor.green();
-                telemetry.addData("ColorSensor", "colo red %f blue %f green ",one, two);
-                telemetry.addData("gold:", testIfGold());
-                telemetry.update();
-                sleep(5000);
+                //float one = (float)colorSensor.red()/(float)colorSensor.blue();
+                //float two = (float)colorSensor.blue()/(float)colorSensor.green();
+                //telemetry.addData("ColorSensor", "color red %f blue %f green ",one, two);
+                //telemetry.addData("gold:", testIfGold());
+                //telemetry.update();
+                //sleep(5000);
+                lift.setPower(-0.6);
+                sleep(4400);
+                lift.setPower(0.0);
+            }
+            if (gamepad2.a) {
+                lift.setPower(0.6);
+                sleep(4400);
+                lift.setPower(0.0);
             }
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
