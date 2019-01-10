@@ -74,7 +74,7 @@ public class CraterAutoClaimCrator extends LinearOpMode {
         //Turns to depot
         msDrive(0.5, -0.5, 900);
         //Yeets robot to depot
-        msDrive(0.35, 0.67, 2150);
+        msDrive(0.35, 0.68, 2150);
         msDrive(0.75,0.75,1375);
         //Claims
         intake.setPower(0.6);
