@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="CraterAutoClaimCrater", group="Autonomous")
+@Autonomous(name="MAIN Crater to Claim to Park", group="Autonomous")
 //@Disabled
 public class CraterAutoClaimCrator extends LinearOpMode {
 
