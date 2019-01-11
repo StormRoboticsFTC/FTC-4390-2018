@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="NO LIFT Depot-Claim OR Crater-Park", group="Autonomous")
 //@Disabled
-public class CraterAutoClaimCrator extends LinearOpMode {
+public class NOLIFT extends LinearOpMode {
 
     // Declare motors/sensors/members
     private DcMotor leftDrive1 = null;

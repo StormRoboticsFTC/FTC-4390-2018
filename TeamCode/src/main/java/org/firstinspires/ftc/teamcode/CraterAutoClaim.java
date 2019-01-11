@@ -7,10 +7,11 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 @Autonomous(name="Crater to Claim", group="Autonomous")
 //@Disabled
-public class CraterAutoClaimCrator extends LinearOpMode {
+
+public class CraterAutoClaim extends LinearOpMode {
 
     // Declare motors/sensors/members
     private DcMotor leftDrive1 = null;
@@ -70,7 +71,7 @@ public class CraterAutoClaimCrator extends LinearOpMode {
         msDrive(-0.5, -0.5, 250); //Backs away from hook on Lander
         msDrive(0.5, -0.5, 900); //Turns to depot
 
-        msDrive(0.35, 0.68, 2150); //Wide arc-turn toward depot
+        msDrive(0.35, 0.72, 2150); //Wide arc-turn toward depot
         msDrive(0.75,0.75,1375); //Move forward into depot
         
         //Releases team marker and Claims Depot using intake rollers
