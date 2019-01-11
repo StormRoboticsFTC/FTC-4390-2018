@@ -1,5 +1,7 @@
-// This autonomous OpMode assumes the robot will start hanging on the DEPOT side of the alliance's side
-// Missions completed: Claiming
+// This autonomous OpMode assumes the robot will start ON THE GROUND on EITHER SIDE of the lander.
+// This program can be used for TWO PURPOSES. 
+//      EITHER: Starting on the Depot side and Claiming the Depot   OR   Starting on the Crater side and Parking on the Crater
+// Missions completed: Claiming OR Parking
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -61,19 +63,9 @@ public class CraterAutoClaimCrator extends LinearOpMode {
 
         // Note: When using encoderDrive(), reverse movement is obtained by setting a negative distance (not speed)
         
-        //Extends arm; completes Landing mission
-        lift.setPower(-0.75);
-        sleep(2800);
-        lift.setPower(0.0);
+        msDrive(0.75,0.75,750); //Move forward into Depot OR Crater
         
-        
-        msDrive(-0.5, -0.5, 250); //Backs away from hook on Lander
-        msDrive(0.5, -0.5, 900); //Turns to depot
-
-        msDrive(0.35, 0.68, 2150); //Wide arc-turn toward depot
-        msDrive(0.75,0.75,1375); //Move forward into depot
-        
-        //Releases team marker and Claims Depot using intake rollers
+        //Releases team marker and Claims Depot using intake rollers (or spins intake and does nothing, if on crater side)
         intake.setPower(0.6);
         msDrive(-0.3,-0.3,550);
         intake.setPower(0.0);
