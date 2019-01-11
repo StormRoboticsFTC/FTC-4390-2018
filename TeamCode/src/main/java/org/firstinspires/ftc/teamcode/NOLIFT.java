@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="NO LIFT Depot to Claim", group="Autonomous")
+@Autonomous(name="NO LIFT Depot-Claim OR Crater-Park", group="Autonomous")
 //@Disabled
 public class CraterAutoClaimCrator extends LinearOpMode {
 
