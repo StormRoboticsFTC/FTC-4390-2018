@@ -4,9 +4,9 @@ This is the teamcode section of our application, where our OpModes are located. 
 ##Autonomous
 We have four files dedicated to autonomous:
 1. Hello
-a. hi
-b. cello
+  a.   hi
+  b.   cello
 2. Bello
-a. mello
-b. yellow
-c. (this is a test in case you could not tell)
+  a.   mello
+  b.   yellow
+  c.   (this is a test in case you could not tell)
