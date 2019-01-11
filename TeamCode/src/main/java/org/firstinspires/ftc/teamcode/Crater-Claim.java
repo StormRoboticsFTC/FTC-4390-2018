@@ -1,4 +1,4 @@
-// This autonomous OpMode assumes the robot will start hanging on the crater side of the alliance's side
+// This autonomous OpMode assumes the robot will start hanging on the CRATER side of the alliance's side
 // Missions completed: Landing, Sampling
 package org.firstinspires.ftc.teamcode;
 
