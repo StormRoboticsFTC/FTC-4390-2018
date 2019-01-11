@@ -1,5 +1,5 @@
 // This autonomous OpMode assumes the robot will start hanging on the crater side of the alliance's side
-// Missions completed: Landing, Sampling, Parking
+// Missions completed: Landing, Sampling
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
