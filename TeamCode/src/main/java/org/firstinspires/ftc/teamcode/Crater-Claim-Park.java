@@ -95,7 +95,7 @@ public class CraterAutoClaimCrator extends LinearOpMode {
     public void encoderDrive(double speed,
                              double inches,
                              double timeoutS) {
-        // We have to define targets for both of the motors on each side
+        // Defines targets for both motors  EDIT: Left encoder not funcional; rewriting to incorporate only one
         int newRightTarget;
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
@@ -103,14 +103,15 @@ public class CraterAutoClaimCrator extends LinearOpMode {
             newRightTarget = rightDrive1.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
             rightDrive1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightDrive1.setTargetPosition(newRightTarget);
-            //Set mode for "2" drives if it doesn't work 11/20/18
-            // reset the timeout time and start motion.
+            
+            // Set mode for "2" drives if it doesn't work 11/20/18
+            // Resets timeout and starts motion
             runtime.reset();
             leftDrive1.setPower(Math.abs(speed));
-
             rightDrive1.setPower(Math.abs(speed));
             telemetry.addData("spot1", rightDrive1.isBusy());
-            // keep looping while we are still active, and there is time left, and both motors are running.
+            
+            // keeps looping while we are still active, and there is time left, and both motors are running.
             while (opModeIsActive() && rightDrive1.isBusy() && runtime.seconds() < timeoutS)
             {
                 telemetry.addData("Path1",  "Running to %d ",  newRightTarget);
@@ -119,18 +120,19 @@ public class CraterAutoClaimCrator extends LinearOpMode {
             }
             // Stop all motion;
             leftDrive1.setPower(0);
-
             rightDrive1.setPower(0);
 
             // Turn off RUN_TO_POSITION
             rightDrive1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-    //Does the calculations for turning in plac
+    
+    //Function that does the calculations for turning in place; to be used with encoderDrive
     public double turnInPlaceCalc(int degrees){
         return ((degrees / 360) * TURNING_CIRCUMFERENCE);
     }
-    //Function for making the robot move based off of time
+    
+    //Function for making the robot move at set left and right speeds for a set amount of time (ms)
     public void msDrive(double leftSpeed, double rightSpeed, long ms) {
         leftDrive1.setPower(leftSpeed);
         rightDrive1.setPower(rightSpeed);
@@ -139,14 +141,16 @@ public class CraterAutoClaimCrator extends LinearOpMode {
         rightDrive1.setPower(0.0);
     }
 
-    //Tests for gold color (Sampling)
+    //Function that uses the color sensor to test for gold color (Sampling)
+    //NOW FUNCTIONAL! Note: needs to be implement
     public boolean testIfGold() {
-        // boolean isGold = false;
         float red = (float)colorSensor.red();
         float green = (float)colorSensor.green();
         float blue = (float)colorSensor.blue();
-
-        //   int alpha = colorSensor.alpha()'
         return (((red / blue) > 1.5) && ((red / blue) < 3.2) && ((blue / green) > 0.37) && ((blue / green) < 0.68));
+        /* Testing for a range of values does not work because red, blue and green, change drastically depending on the 
+        *  distance between the color sensor and the mineral being tested. However the ratio of red to blue to green is
+        *  always constant for the same hue of gold. Therefore checking for the right range will work. Ranges were 
+        *  calculated by gathering the RGB readings at multiple distancing and finding the average ratios. */
     }
 }
