@@ -1,4 +1,5 @@
-// this is a copy from Mr. Bross's training package; to be changed as needed
+// This autonomous OpMode assumes the robot will start hanging on the crater side of the alliance's side
+// Missions completed: Landing, Sampling, Parking
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -11,7 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 //@Disabled
 public class CraterAutoClaimCrator extends LinearOpMode {
 
-    // Declare OpMode members.
+    // Declare motors/sensors/members
     private DcMotor leftDrive1 = null;
     private DcMotor rightDrive1 = null;
     private DcMotor intake = null;
@@ -34,52 +35,49 @@ public class CraterAutoClaimCrator extends LinearOpMode {
     @Override
     public void runOpMode(){
 
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-
+        // Initialize the hardware variables. 
         leftDrive1 = hardwareMap.get(DcMotor.class, "left_drive1"); //First left drive motor
         rightDrive1 = hardwareMap.get(DcMotor.class, "right_drive1"); //First right drive motor
         intake = hardwareMap.get(DcMotor.class, "intake"); //Motor that controls the rubber band intake
         lift = hardwareMap.get(DcMotor.class, "lift1"); //Motor that controls the lift
         colorSensor = hardwareMap.colorSensor.get("color"); //Color sensor for sampling
 
-        //Sets direction of motors
+        // Sets direction of motors
         leftDrive1.setDirection(DcMotor.Direction.REVERSE); //Left drive is reversed
         rightDrive1.setDirection(DcMotor.Direction.FORWARD);
 
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Resetting Encoders");
+        // Send telemetry message to signify robot waiting
+        telemetry.addData("Status", "Waiting");
         telemetry.update();
-        //Resets Encoders
-       // rightDrive1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        // Resets Encoders [no longer in use]
+        //rightDrive1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // Send telemetry message to indicate successful Encoder reset
         //telemetry.addData("Path0", "Starting at %7d",
-       //         rightDrive1.getCurrentPosition());
-        telemetry.update();
+        //      rightDrive1.getCurrentPosition());
+        //telemetry.update();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         colorSensor.enableLed(true);
 
-
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
-
-        //Actual program
-        //Drops robot
+        // Note: When using encoderDrive(), reverse movement is obtained by setting a negative distance (not speed)
+        
+        //Extends arm; completes Landing mission
         lift.setPower(-0.75);
         sleep(2800);
         lift.setPower(0.0);
-        //Backs away from bar
-        msDrive(-0.5, -0.5, 250);
-        //Turns to depot
-        msDrive(0.5, -0.5, 900);
-        //Yeets robot to depot
-        msDrive(0.35, 0.68, 2150);
-        msDrive(0.75,0.75,1375);
-        //Claims
+        
+        
+        msDrive(-0.5, -0.5, 250); //Backs away from hook on Lander
+        msDrive(0.5, -0.5, 900); //Turns to depot
+
+        msDrive(0.35, 0.68, 2150); //Wide arc-turn toward depot
+        msDrive(0.75,0.75,1375); //Move forward into depot
+        
+        //Releases team marker and Claims Depot using intake rollers
         intake.setPower(0.6);
         msDrive(-0.3,-0.3,550);
         intake.setPower(0.0);
+        
         //Backs up to crater
         lift.setPower(0.6);
         sleep(1725);
