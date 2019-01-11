@@ -80,8 +80,9 @@ public class CraterAutoClaimCrator extends LinearOpMode {
         
         //Backs up to crater
         lift.setPower(0.6);
-        sleep(1725);
         msDrive(-0.9, -0.9, 2675);
+        sleep(1725);
+        lift.setPower(0.0);
 
     }
     /*
